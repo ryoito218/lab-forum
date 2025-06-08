@@ -29,3 +29,6 @@ class CategoryResponse(BaseModel):
 
 class CategoryCreate(BaseModel):
     name: str
+
+class CategoryCreate(BaseModel):
+    name: str
