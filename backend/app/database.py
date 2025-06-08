@@ -1,9 +1,19 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://forum_user:forum_pass@db:5432/forum_db") # これでいいのか
+load_dotenv()
+
+user = os.getenv("POSTGRES_USER")
+pw = os.getenv("POSTGRES_PASSWORD")
+db = os.getenv("POSTGRES_DB")
+port = os.getenv("DB_PORT")
+host = os.getenv("DB_HOST")
+
+DATABASE_URL = f"postgresql://{user}:{pw}@{host}:{port}/{db}"
+
 
 engine = create_engine(DATABASE_URL, future=True)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
