@@ -26,3 +26,6 @@ class CategoryResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class CategoryCreate(BaseModel):
+    name: str
