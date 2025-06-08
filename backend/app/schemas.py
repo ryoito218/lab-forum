@@ -19,3 +19,13 @@ class PostResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class CategoryResponse(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+class CategoryCreate(BaseModel):
+    name: str
