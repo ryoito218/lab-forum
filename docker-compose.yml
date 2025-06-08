@@ -9,6 +9,10 @@ services:
     volumes:
       - ./backend:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    env_file:
+      - .env
+    depends_on:
+      - db
 
   frontend:
     build: ./frontend
@@ -18,3 +22,20 @@ services:
     volumes:
       - ./frontend:/app
     command: npm run dev
+    env_file:
+      - .env
+  
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: forum_user
+      POSTGRES_PASSWORD: forum_pass
+      POSTGRES_DB: forum_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
