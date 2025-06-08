@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app import models
 from app.database import SessionLocal
-from app.schemas import PostCreate
+from app.schemas import PostCreate, PostResponse
+from typing import List
 
 router = APIRouter(prefix="/posts", tags=["Posts"])
 
@@ -13,7 +14,7 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/")
+@router.get("/", response_model=List[PostResponse])
 def read_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
     return posts
