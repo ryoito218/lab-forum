@@ -6,7 +6,7 @@ class PostCreate(BaseModel):
     title: str
     content: str
     category_id: int
-    tag_ids: Optional[List[int]] = []
+    tags: List[str] = []
 
 class PostResponse(BaseModel):
     id: int

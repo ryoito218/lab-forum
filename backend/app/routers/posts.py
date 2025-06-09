@@ -19,13 +19,23 @@ def read_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
     return posts
 
-@router.post("/")
+@router.post("/", response_model=PostResponse)
 def create_post(post_data: PostCreate, db: Session = Depends(get_db)):
+    tags = []
+    for tag_name in post_data.tags:
+        tag = db.query(models.Tag).filter(models.Tag.name == tag_name).first()
+        if not tag:
+            tag = models.Tag(name=tag_name)
+            db.add(tag)
+            db.flush()
+        tags.append(tag)
+
     db_post = models.Post(
         title=post_data.title,
         content=post_data.content,
         category_id=post_data.category_id,
-        user_id=1
+        user_id=1,
+        tags=tags
     )
     db.add(db_post)
     db.commit()
