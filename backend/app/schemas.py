@@ -26,6 +26,13 @@ class PostUpdate(BaseModel):
     category_id: Optional[int] = None
     tag_ids: Optional[List[int]] = None
 
+class TagResponse(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
 class CategoryResponse(BaseModel):
     id: int
     name: str
