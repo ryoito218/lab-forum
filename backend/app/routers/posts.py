@@ -52,3 +52,13 @@ def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get
     db.commit()
     db.refresh(post)
     return post
+
+@router.delete("/{post_id}")
+def delete_post(post_id: int, db: Session = Depends(get_db)):
+    post = db.query(models.Post).get(post_id)
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    db.delete(post)
+    db.commit()
+    return {"detail": f"Post {post_id} deleted"}
