@@ -56,6 +56,19 @@ def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get
         raise HTTPException(status_code=404, detail="Post not found")
     
     update_fields = update_data.dict(exclude_unset=True)
+
+    if "tags" in update_fields and update_data.tags is not None:
+        tags = []
+        for tag_name in update_data.tags:
+            tag = db.query(models.Tag).filter(models.Tag.name == tag_name).first()
+            if not tag:
+                tag = models.Tag(name=tag_name)
+                db.add(tag)
+                db.flush()
+            tags.append(tag)
+        post.tags = tags
+        del update_fields["tags"]
+
     for key, value in update_fields.items():
         setattr(post, key, value)
     
