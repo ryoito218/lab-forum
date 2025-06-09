@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app import models
 from app.database import SessionLocal
-from app.schemas import PostCreate, PostResponse
+from app.schemas import PostCreate, PostResponse, PostUpdate
 from typing import List
 
 router = APIRouter(prefix="/posts", tags=["Posts"])
@@ -37,4 +37,18 @@ def read_post(post_id: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).get(post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
+    return post
+
+@router.put("/{post_id}", response_model=PostResponse)
+def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get_db)):
+    post = db.query(models.Post).get(post_id)
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    update_fields = update_data.dict(exclude_unset=True)
+    for key, value in update_fields.items():
+        setattr(post, key, value)
+    
+    db.commit()
+    db.refresh(post)
     return post

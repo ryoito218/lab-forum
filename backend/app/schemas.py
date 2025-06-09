@@ -20,6 +20,12 @@ class PostResponse(BaseModel):
     class Config:
         orm_mode = True
 
+class PostUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    category_id: Optional[int] = None
+    tag_ids: Optional[List[int]] = None
+
 class CategoryResponse(BaseModel):
     id: int
     name: str
