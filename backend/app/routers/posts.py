@@ -31,3 +31,10 @@ def create_post(post_data: PostCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_post)
     return db_post
+
+@router.get("/{post_id}", response_model=PostResponse)
+def read_post(post_id: int, db: Session = Depends(get_db)):
+    post = db.query(models.Post).get(post_id)
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return post
