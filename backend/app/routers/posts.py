@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from app import models
 from app.database import SessionLocal
 from app.schemas import PostCreate, PostResponse, PostUpdate
+from app.dependencies import get_current_user
+from app.models import User
 from typing import List
 
 router = APIRouter(prefix="/posts", tags=["Posts"])
@@ -20,7 +22,7 @@ def read_posts(db: Session = Depends(get_db)):
     return posts
 
 @router.post("/", response_model=PostResponse)
-def create_post(post_data: PostCreate, db: Session = Depends(get_db)):
+def create_post(post_data: PostCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     tags = []
     for tag_name in post_data.tags:
         tag = db.query(models.Tag).filter(models.Tag.name == tag_name).first()
@@ -34,7 +36,7 @@ def create_post(post_data: PostCreate, db: Session = Depends(get_db)):
         title=post_data.title,
         content=post_data.content,
         category_id=post_data.category_id,
-        user_id=1,
+        user_id=current_user.id,
         tags=tags
     )
     db.add(db_post)
