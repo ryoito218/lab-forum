@@ -3,9 +3,10 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app import models
 from app.schemas import CategoryResponse, CategoryCreate
+from app.dependencies import get_current_user
 from typing import List
 
-router = APIRouter(prefix="/categories", tags=["Categories"])
+router = APIRouter(prefix="/categories", tags=["Categories"], dependencies=[Depends(get_current_user)])
 
 def get_db():
     db = SessionLocal()

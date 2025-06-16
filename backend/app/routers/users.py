@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from passlib.context import CryptContext
 from app.schemas import UserCreate, UserResponse
+from app.dependencies import get_current_user
 from app import models
 
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter(prefix="/users", tags=["Users"], dependencies=[Depends(get_current_user)])
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def get_db():
