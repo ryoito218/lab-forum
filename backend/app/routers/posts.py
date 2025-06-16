@@ -7,7 +7,7 @@ from app.dependencies import get_current_user
 from app.models import User
 from typing import List
 
-router = APIRouter(prefix="/posts", tags=["Posts"])
+router = APIRouter(prefix="/posts", tags=["Posts"], dependencies=[Depends(get_current_user)])
 
 def get_db():
     db = SessionLocal()

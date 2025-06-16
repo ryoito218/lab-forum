@@ -3,9 +3,10 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app import models
 from app.schemas import TagResponse, PostResponse
+from app.dependencies import get_current_user
 from typing import List
 
-router = APIRouter(prefix="/tags", tags=["Tags"])
+router = APIRouter(prefix="/tags", tags=["Tags"], dependencies=[Depends(get_current_user)])
 
 def get_db():
     db = SessionLocal()
