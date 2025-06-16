@@ -2,6 +2,13 @@ from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 
+class TagResponse(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
 class PostCreate(BaseModel):
     title: str
     content: str
@@ -16,6 +23,7 @@ class PostResponse(BaseModel):
     user_id: int
     created_at: datetime
     updated_at: datetime
+    tags: List[TagResponse]
 
     class Config:
         orm_mode = True
@@ -25,13 +33,6 @@ class PostUpdate(BaseModel):
     content: Optional[str] = None
     category_id: Optional[int] = None
     tags: Optional[List[str]] = None
-
-class TagResponse(BaseModel):
-    id: int
-    name: str
-
-    class Config:
-        orm_mode = True
 
 class CategoryResponse(BaseModel):
     id: int
