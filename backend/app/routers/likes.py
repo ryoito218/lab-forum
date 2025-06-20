@@ -43,3 +43,18 @@ def get_like_count(
     
     like_count = db.query(models.Like).filter(models.Like.post_id == post_id).count()
     return {"post_id": post_id, "like_count": like_count}
+
+@router.get("/{post_id}/liked")
+def check_user_liked_post(
+    post_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    post = db.query(models.Post).filter(models.Post.id == post_id).first()
+    
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    liked = db.query(models.Like).filter_by(post_id=post_id, user_id=current_user.id).first() is not None
+    
+    return {"post_id": post_id, "liked": liked}
