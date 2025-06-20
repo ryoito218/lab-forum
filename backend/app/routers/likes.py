@@ -19,7 +19,7 @@ def toggle_like(
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     
-    existing_like = db.query(models.Like).filter_by(post_id, user_id=current_user.id).first()
+    existing_like = db.query(models.Like).filter_by(post_id=post_id, user_id=current_user.id).first()
 
     if existing_like:
         db.delete(existing_like)
