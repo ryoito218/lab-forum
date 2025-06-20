@@ -48,7 +48,7 @@ def delete_comment(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    comment = db.query(models.Comment).filter(models.Comment.id == comment_id).filter()
+    comment = db.query(models.Comment).filter(models.Comment.id == comment_id).first()
     if not comment:
         raise HTTPException(status_code=404, detail="Comment not found")
     if comment.user_id != current_user.id and current_user.role != "admin":
