@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 from app.dependencies import get_db, get_current_user
 from sqlalchemy import or_
+from sqlalchemy.orm import joinedload
 from typing import List
 from app.models import User
 
@@ -17,10 +18,11 @@ def search_posts(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    results = db.query(models.Post).filter(
+    posts = db.query(models.Post).options(joinedload(models.Post.tags)).filter(
         or_(
             models.Post.title.ilike(f"%{keyword}%"),
-            models.Post.content.ilike(f"%{keyword}%")
+            models.Post.content.ilike(f"%{keyword}%"),
+            models.Post.tags.any(models.Tag.name.ilike(f"%{keyword}%"))
         )
     ).all()
-    return results
+    return posts
