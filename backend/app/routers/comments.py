@@ -41,3 +41,19 @@ def list_comments(
     
     comments = db.query(models.Comment).filter(models.Comment.post_id == post_id).all()
     return comments
+
+@router.delete("/comments/{comment_id}", status_code=204)
+def delete_comment(
+    comment_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    comment = db.query(models.Comment).filter(models.Comment.id == comment_id).filter()
+    if not comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    if comment.user_id != current_user.id and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized to delete this comment")
+    
+    db.delete(comment)
+    db.commit()
+    return
