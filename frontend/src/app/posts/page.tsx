@@ -1,6 +1,7 @@
 import React from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
 type Post = {
   id: number;
@@ -24,6 +25,10 @@ const getPosts = async (): Promise<Post[]> => {
     cache: "no-store",
   });
 
+  if (res.status == 401) {
+    redirect('/login');
+  }
+
   if (!res.ok) throw new Error("投稿の取得に失敗しました");
   return res.json();
 };
@@ -37,7 +42,7 @@ const PostListPage = async () => {
       <ul className='space-y-4'>
         {posts.map((post) => (
           <li key={post.id} className='p-4 bg-white rounded shadow'>
-            <h3 className='text-lg font-bold'>{post.title}</h3>
+            <h3 className='text-lg font-bold'><Link href={`/posts/${post.id}`}>{post.title}</Link></h3>
             <p className='text-gray-700'>{post.content}</p>
             <p className='text-sm text-gray-400 mt-2'>
               {new Date(post.created_at).toLocaleString()}
