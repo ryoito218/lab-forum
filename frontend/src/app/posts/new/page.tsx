@@ -51,8 +51,8 @@ const NewPostPage = async () => {
         </div>
 
         <div>
-          <label className='block mb-1'>タグ（カンマ区切り）</label>
-          <input type='text' name='tags' className='w-full px-3 py-2 border rounded' />
+          <label className='block mb-1'>タグ（半角カンマ区切り）</label>
+          <input type='text' name='tags' className='w-full px-3 py-2 border rounded' placeholder='例: AI, Python, Deep Learning' />
         </div>
 
         <div>
