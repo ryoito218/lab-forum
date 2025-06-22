@@ -1,6 +1,7 @@
 import React from 'react'
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import DeletePostButton from './DeletePostButton';
 
 type Props = {
   params: {
@@ -44,6 +45,8 @@ const PostDetailPage = async ({ params }: Props ) => {
       <p className='text-sm text-gray-500'>
         投稿日: {new Date(post.created_at).toLocaleString()}
       </p>
+
+      <DeletePostButton postId={post.id} />
     </div>
   );
 };
