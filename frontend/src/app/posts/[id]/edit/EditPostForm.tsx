@@ -1,46 +1,62 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+
+interface Tag {
+  id: number;
+  name: string;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  category_id: number;
+  tags: Tag[];
+}
 
 interface Category {
   id: number;
   name: string;
 }
 
-interface NewPostFormProps {
+interface EditPostFormProps {
+  post: Post;
   categories: Category[];
 }
 
-const NewPostForm: React.FC<NewPostFormProps> = ({ categories }) => {
+const EditPostForm: React.FC<EditPostFormProps> = ({ post, categories }) => {
   const router = useRouter();
-  const [title, setTitle] = useState('');
-  const [categoryId, setCategoryId] = useState(categories[0]?.id || 1);
-  const [tags, setTags] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState(post.title);
+  const [content, setContent] = useState(post.content);
+  const [tags, setTags] = useState(post.tags.map((tagObj: {id: number; name: string}) => tagObj.name).join(', '));
+  const [categoryId, setCategoryId] = useState(post.category_id);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = Cookies.get('access_token');
-    if (!token) return setError('ログインが必要です');
+    if (!token) {
+      setError('ログインが必要です');
+      return;
+    }
 
-    const tagList = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+    const tagNames = tags.split(',').map(t => t.trim()).filter(Boolean);
+    const tagList = tagNames.map(name => {
+      const matched = categories.find(cat => cat.name === name);
+      return matched ? matched.id : name;
+    });
 
     try {
-      const res = await fetch('http://localhost:8000/posts', {
-        method: 'POST',
+      const res = await fetch(`http://localhost:8000/posts/${post.id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          title,
-          content,
-          category_id: categoryId,
-          tags: tagList,
-        }),
+        body: JSON.stringify({ title, content, tags: tagList, category_id: categoryId }),
       });
 
       if (res.status === 401) {
@@ -49,10 +65,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ categories }) => {
         return;
       }
 
-      if (!res.ok) {
-        throw new Error('投稿に失敗しました');
-      }
-
+      if (!res.ok) return setError('更新に失敗しました');
       router.push('/posts');
     } catch (err) {
       setError((err as Error).message);
@@ -61,8 +74,8 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ categories }) => {
 
   return (
     <div className='max-w-2xl mx-auto p-6 bg-white rounded shadow mt-6'>
-      <h1 className='text-2xl font-bold mb-4'>新規投稿</h1>
-      <form className='space-y-4' onSubmit={handleSubmit}>
+      <h1 className='text-2xl font-bold mb-4'>投稿編集</h1>
+      <form className='space-y-4' onSubmit={handleUpdate}>
         <div>
           <label className='block mb-1'>タイトル</label>
           <input
@@ -120,11 +133,11 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ categories }) => {
           type='submit'
           className='w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700'
         >
-          投稿
+          更新
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default NewPostForm;
+export default EditPostForm

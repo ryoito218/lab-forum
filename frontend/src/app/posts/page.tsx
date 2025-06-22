@@ -26,6 +26,7 @@ const getPosts = async (): Promise<Post[]> => {
   });
 
   if (res.status == 401) {
+    alert('セッションの有効期限が切れました。再ログインしてください。');
     redirect('/login');
   }
 
@@ -37,8 +38,16 @@ const PostListPage = async () => {
   const posts = await getPosts();
 
   return (
-    <div>
-      <h2 className='text-2xl font-semibold mb-4'>投稿一覧</h2>
+    <div className='max-w-3xl mx-auto p-6'>
+      <div className='flex justify-between items-center mb-4'>
+        <h2 className='text-2xl font-semibold'>投稿一覧</h2>
+        <Link href='/posts/new'>
+          <button className='bg-blue-500 text-white px-4 py-2 rounded cursor-pointer'>
+            ＋新規投稿
+          </button>
+        </Link>
+      </div>
+      
       <ul className='space-y-4'>
         {posts.map((post) => (
           <li key={post.id} className='p-4 bg-white rounded shadow'>

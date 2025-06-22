@@ -1,6 +1,8 @@
 import React from 'react'
+import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import DeletePostButton from './DeletePostButton';
 
 type Props = {
   params: {
@@ -44,6 +46,24 @@ const PostDetailPage = async ({ params }: Props ) => {
       <p className='text-sm text-gray-500'>
         投稿日: {new Date(post.created_at).toLocaleString()}
       </p>
+
+      <div className='flex gap-4 mt-6'>
+        <Link href={`/posts/${post.id}/edit`}>
+          <button className='bg-yellow-500 text-white px-4 py-2 rounded cursor-pointer'>
+            編集する
+          </button>
+        </Link>
+
+        <DeletePostButton postId={post.id} />
+      </div>
+      
+      <div className='mt-4'>
+        <Link href='/posts'>
+          <button className='bg-gray-300 text-gray-800 px-4 py-2 rounded cursor-pointer'>
+            ← 投稿一覧に戻る
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };
