@@ -30,6 +30,10 @@ const PostDetailPage = async ({ params }: Props ) => {
     cache: "no-store",
   });
 
+  if (res.status == 401) {
+    redirect('/login');
+  }
+
   if (!res.ok) {
     return (
       <div className='p-4 text-red-600'>
