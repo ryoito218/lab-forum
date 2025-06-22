@@ -43,6 +43,12 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ categories }) => {
         }),
       });
 
+      if (res.status === 401) {
+        alert('セッションの有効期限が切れました。再ログインしてください。');
+        router.push('/login');
+        return;
+      }
+
       if (!res.ok) {
         throw new Error('投稿に失敗しました');
       }

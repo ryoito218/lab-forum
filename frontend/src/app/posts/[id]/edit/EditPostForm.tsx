@@ -59,6 +59,12 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post, categories }) => {
         body: JSON.stringify({ title, content, tags: tagList, category_id: categoryId }),
       });
 
+      if (res.status === 401) {
+        alert('セッションの有効期限が切れました。再ログインしてください。');
+        router.push('/login');
+        return;
+      }
+
       if (!res.ok) return setError('更新に失敗しました');
       router.push('/posts');
     } catch (err) {
