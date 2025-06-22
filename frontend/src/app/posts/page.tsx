@@ -26,6 +26,7 @@ const getPosts = async (): Promise<Post[]> => {
   });
 
   if (res.status == 401) {
+    alert('セッションの有効期限が切れました。再ログインしてください。');
     redirect('/login');
   }
 

@@ -17,6 +17,11 @@ const getCategories = async (): Promise<Category[]> => {
     cache: 'no-store',
   });
 
+  if (res.status === 401) {
+    alert('セッションの有効期限が切れました。再ログインしてください。');
+    redirect('/login');
+  }
+
   if (!res.ok) {
     redirect('/login');
   }

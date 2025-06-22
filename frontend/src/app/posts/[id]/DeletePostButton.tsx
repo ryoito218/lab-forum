@@ -28,6 +28,12 @@ const DeletePostButton = ({ postId }: Props) => {
       },
     });
 
+    if (res.status === 401) {
+      alert('セッションの有効期限がきれました。再ログインしてください。');
+      router.push('/login');
+      return;
+    }
+
     if (res.ok) {
       router.push('/posts');
     } else {
