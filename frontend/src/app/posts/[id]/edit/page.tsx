@@ -43,6 +43,10 @@ const getCategories = async (): Promise<Category[]> => {
     cache: 'no-store',
   });
 
+  if (res.status == 401) {
+    redirect('/login');
+  }
+
   if (!res.ok) redirect('/posts');
   return res.json();
 };
