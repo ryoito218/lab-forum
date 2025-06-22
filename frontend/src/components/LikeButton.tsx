@@ -4,6 +4,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import { Heart, HeartIcon } from 'lucide-react';
 
 type Props = {
   postId: number;
@@ -69,8 +70,16 @@ const LikeButton = ({ postId }: Props) => {
   };
 
   return (
-    <button onClick={handleToggleLike} className={`px-4 py-2 rounded cursor-pointer ${liked ? 'bg-pink-500 text-white': 'bg-gray-200 text-gray-800'}`}>
-      {likesCount}
+    <button 
+      onClick={handleToggleLike} 
+      className='flex items-center gap-1 cursor-pointer select-none'
+    >
+      {liked ? (
+        <HeartIcon className='w-6 h-6 text-pink-500 fill-pink-500' />
+      ) : (
+        <Heart className='w-6 h-6 text-gray-400' />
+      )}
+      <span className='text-sm text-gray-600'>{likesCount}</span>
     </button>
   )
 }
