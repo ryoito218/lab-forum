@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import DeletePostButton from './DeletePostButton';
 import LikeButton from '@/components/LikeButton';
+import CommentsSection from './CommentsSection';
 
 type Props = {
   params: {
@@ -69,6 +70,10 @@ const PostDetailPage = async ({ params }: Props ) => {
             ← 投稿一覧に戻る
           </button>
         </Link>
+      </div>
+
+      <div className='mt-4'>
+        <CommentsSection />
       </div>
     </div>
   );

@@ -42,6 +42,7 @@ def list_comments(
     comments = db.query(models.Comment).filter(models.Comment.post_id == post_id).all()
     return comments
 
+# なぜcomments/{comment_id}?
 @router.delete("/comments/{comment_id}", status_code=204)
 def delete_comment(
     comment_id: int,
