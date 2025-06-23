@@ -10,6 +10,7 @@ const CommentsSection: React.FC = () => {
   const params = useParams();
   const postId = params?.id as string;
   const [comments, setComments] = useState<Comment[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 
   const fetchComments = async () => {
     const token = Cookies.get('access_token');
@@ -43,10 +44,29 @@ const CommentsSection: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const token = Cookies.get('access_token');
+      const res = await fetch('http://localhost:8000/auth/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const user = await res.json();
+        setCurrentUserId(user.id);
+      }
+    };
+
+    fetchCurrentUser();
+    fetchComments();
+  }, [postId]);
+
   return (
     <div className='mt-10'>
       <h3 className='text-lg font-bold mb-2'>コメント</h3>
       <CommentForm postId={postId} onCommentAdded={fetchComments} />
+      
       <ul className='mt-4 space-y-4'>
         {comments.map(comment => (
           <li key={comment.id} className='bg-white p-4 shadow rounded'>
@@ -54,15 +74,18 @@ const CommentsSection: React.FC = () => {
             <p className='text-xs text-gray-500'>
               {new Date(comment.created_at).toLocaleString()}
             </p>
-            <button
-              onClick={() => handleDelete(comment.id)}
-              className='text-red-500 text-sm mt-2 cursor-pointer'
-            >
-              削除
-            </button>
+            {comment.user_id === currentUserId && (
+              <button
+                onClick={() => handleDelete(comment.id)}
+                className='text-red-500 text-sm mt-2 cursor-pointer'
+              >
+                削除
+              </button>
+            )}
           </li>
         ))}
       </ul>
+
     </div>
   );
 };
