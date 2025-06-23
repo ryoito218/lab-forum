@@ -2,8 +2,8 @@ import React from 'react'
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import DeletePostButton from './DeletePostButton';
 import LikeButton from '@/components/LikeButton';
+import PostActions from './PostActions';
 import CommentsSection from './CommentsSection';
 
 type Props = {
@@ -14,6 +14,7 @@ type Props = {
 
 type Post = {
   id: number;
+  user_id: number;
   title: string;
   content: string;
   created_at: string;
@@ -54,15 +55,7 @@ const PostDetailPage = async ({ params }: Props ) => {
         投稿日: {new Date(post.created_at).toLocaleString()}
       </p>
 
-      <div className='flex gap-4 mt-6'>
-        <Link href={`/posts/${post.id}/edit`}>
-          <button className='bg-yellow-500 text-white px-4 py-2 rounded cursor-pointer'>
-            編集する
-          </button>
-        </Link>
-
-        <DeletePostButton postId={post.id} />
-      </div>
+      <PostActions postId={post.id} postUserId={post.user_id} />
       
       <div className='mt-4'>
         <Link href='/posts'>
