@@ -52,10 +52,13 @@ def read_post(post_id: int, db: Session = Depends(get_db)):
     return post
 
 @router.put("/{post_id}", response_model=PostResponse)
-def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get_db)):
+def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     post = db.query(models.Post).get(post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
+    
+    if post.user_id != current_user.id and current_user.role != 'admin':
+        raise HTTPException(status_code=403, detail="Not authorized to update this post")
     
     update_fields = update_data.dict(exclude_unset=True)
 
@@ -79,10 +82,13 @@ def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get
     return post
 
 @router.delete("/{post_id}")
-def delete_post(post_id: int, db: Session = Depends(get_db)):
+def delete_post(post_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     post = db.query(models.Post).get(post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
+    
+    if post.user_id != current_user.id and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized to delete this post")
     
     db.delete(post)
     db.commit()
