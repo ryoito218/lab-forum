@@ -17,8 +17,15 @@ type Post = {
   id: number;
   title: string;
   content: string;
+  user_id: number;
   category_id: number;
   tags: Tag[];
+};
+
+type User = {
+  id: number;
+  email: string;
+  role: string;
 };
 
 const getPost = async (id: string): Promise<Post> => {
@@ -51,10 +58,28 @@ const getCategories = async (): Promise<Category[]> => {
   return res.json();
 };
 
+const getCurrentUser = async (): Promise<User | null> => {
+  const token = (await cookies()).get('access_token')?.value;
+  if (!token) return null;
+
+  const res = await fetch(`http://backend:8000/auth/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) return null;
+  return res.json();
+};
+
 const EditPostPage = async (props: { params: {id: string} } ) => {
   const { id } = await props.params;
   const post = await getPost(id);
   const categories = await getCategories();
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser || currentUser.id !== post.user_id) {
+    redirect('/posts');
+  }
 
   return <EditPostForm post={post} categories={categories} />;
 };
