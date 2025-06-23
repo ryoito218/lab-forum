@@ -43,7 +43,7 @@ def list_comments(
     return comments
 
 # なぜcomments/{comment_id}?
-@router.delete("/comments/{comment_id}", status_code=204)
+@router.delete("/{comment_id}", status_code=204)
 def delete_comment(
     comment_id: int,
     db: Session = Depends(get_db),
