@@ -2,7 +2,9 @@ import React from 'react'
 import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import DeletePostButton from './DeletePostButton';
+import LikeButton from '@/components/LikeButton';
+import PostActions from './PostActions';
+import CommentsSection from './CommentsSection';
 
 type Props = {
   params: {
@@ -12,6 +14,7 @@ type Props = {
 
 type Post = {
   id: number;
+  user_id: number;
   title: string;
   content: string;
   created_at: string;
@@ -29,6 +32,10 @@ const PostDetailPage = async ({ params }: Props ) => {
     cache: "no-store",
   });
 
+  if (res.status == 401) {
+    redirect('/login');
+  }
+
   if (!res.ok) {
     return (
       <div className='p-4 text-red-600'>
@@ -42,20 +49,13 @@ const PostDetailPage = async ({ params }: Props ) => {
   return (
     <div className='max-w-3xl mx-auto p-6'>
       <h1 className='text-2xl font-bold mb-4'>{post.title}</h1>
+      <LikeButton postId={post.id} />
       <p className='mb-4'>{post.content}</p>
       <p className='text-sm text-gray-500'>
         投稿日: {new Date(post.created_at).toLocaleString()}
       </p>
 
-      <div className='flex gap-4 mt-6'>
-        <Link href={`/posts/${post.id}/edit`}>
-          <button className='bg-yellow-500 text-white px-4 py-2 rounded cursor-pointer'>
-            編集する
-          </button>
-        </Link>
-
-        <DeletePostButton postId={post.id} />
-      </div>
+      <PostActions postId={post.id} postUserId={post.user_id} />
       
       <div className='mt-4'>
         <Link href='/posts'>
@@ -63,6 +63,10 @@ const PostDetailPage = async ({ params }: Props ) => {
             ← 投稿一覧に戻る
           </button>
         </Link>
+      </div>
+
+      <div className='mt-4'>
+        <CommentsSection />
       </div>
     </div>
   );
