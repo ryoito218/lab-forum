@@ -27,6 +27,22 @@ const CommentsSection: React.FC = () => {
     fetchComments();
   }, [postId]);
 
+  const handleDelete = async (commentId: number) => {
+    const token = Cookies.get('access_token');
+    const res = await fetch(`http://localhost:8000/posts/${postId}/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.ok) {
+      fetchComments();
+    } else {
+      alert('削除に失敗しました');
+    }
+  };
+
   return (
     <div className='mt-10'>
       <h3 className='text-lg font-bold mb-2'>コメント</h3>
@@ -38,6 +54,12 @@ const CommentsSection: React.FC = () => {
             <p className='text-xs text-gray-500'>
               {new Date(comment.created_at).toLocaleString()}
             </p>
+            <button
+              onClick={() => handleDelete(comment.id)}
+              className='text-red-500 text-sm mt-2 cursor-pointer'
+            >
+              削除
+            </button>
           </li>
         ))}
       </ul>
