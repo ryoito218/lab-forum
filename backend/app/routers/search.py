@@ -27,7 +27,7 @@ def search_posts(
 ):
     
     q = (
-        db.query(models)
+        db.query(models.Post)
         .options(joinedload(models.Post.tags))
         .filter(
             or_(
