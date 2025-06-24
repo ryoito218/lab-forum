@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from app import models, schemas
 from app.dependencies import get_db, get_current_user
@@ -15,6 +15,12 @@ router = APIRouter(
 @router.get("/posts", response_model=List[schemas.PostResponse])
 def search_posts(
     keyword: str = Query(..., min_length=1),
+    page: int = Query(1, ge=1, description="1 以上"),
+    page_size: int = Query(20, ge=1, le=100),
+    sort: str = Query(
+        "created_desc",
+        description="created_asc / created_desc / title_asc / title_desc",
+    ),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
