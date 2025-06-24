@@ -53,3 +53,8 @@ def search_posts(
         .limit(page_size)
         .all()
     )
+
+    if not posts and total:
+        raise HTTPException(status_code=404, detail="page not found")
+    
+    return posts
