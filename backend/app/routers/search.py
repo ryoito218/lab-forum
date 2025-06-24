@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Query, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import or_, asc, desc
 from typing import List
@@ -36,4 +36,20 @@ def search_posts(
                 models.Post.tags.any(models.Tag.name.ilike(f"%{keyword}%")),
             )
         )
+    )
+
+    sort_map = {
+        "created_asc": asc(models.Post.created_at),
+        "created_desc": desc(models.Post.created_at),
+        "title_asc": asc(models.Post.title),
+        "title_desc": desc(models.Post.title),
+    }
+    q = q.order_by(sort_map[sort])
+
+    total = q.count()
+    posts = (
+        q
+        .offset((page - 1) * page_size)
+        .limit(page_size)
+        .all()
     )
