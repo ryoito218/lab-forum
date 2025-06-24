@@ -11,6 +11,8 @@ type Post = {
   created_at: string;
 };
 
+const pageSize = 10;
+
 const SORT_OPTIONS = [
   { value: 'created_desc', label: '新しい順' },
   { value: 'created_asc', label: '古い順' },
@@ -28,6 +30,8 @@ const SearchPage = () => {
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const hasNext = posts.length === pageSize;
 
   useEffect(() => {
     if (!keyword) return;
@@ -111,6 +115,7 @@ const SearchPage = () => {
           Prev
         </button>
         <button
+          disabled={!hasNext}
           onClick={() => handlePageChange(page + 1)}
           className='px-4 py-2 bg-gray-200 rounded'
         >
