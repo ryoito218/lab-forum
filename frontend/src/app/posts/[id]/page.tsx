@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import LikeButton from '@/components/LikeButton';
+import BackButton from '@/components/BackButton';
 import PostActions from './PostActions';
 import CommentsSection from './CommentsSection';
+import PostContent from '@/components/PostContent';
 
 type Props = {
   params: {
@@ -50,19 +52,15 @@ const PostDetailPage = async ({ params }: Props ) => {
     <div className='max-w-3xl mx-auto p-6'>
       <h1 className='text-2xl font-bold mb-4'>{post.title}</h1>
       <LikeButton postId={post.id} />
-      <p className='mb-4'>{post.content}</p>
       <p className='text-sm text-gray-500'>
         投稿日: {new Date(post.created_at).toLocaleString()}
       </p>
+      <PostContent content={post.content} />
 
       <PostActions postId={post.id} postUserId={post.user_id} />
       
       <div className='mt-4'>
-        <Link href='/posts'>
-          <button className='bg-gray-300 text-gray-800 px-4 py-2 rounded cursor-pointer'>
-            ← 投稿一覧に戻る
-          </button>
-        </Link>
+        <BackButton />
       </div>
 
       <div className='mt-4'>
