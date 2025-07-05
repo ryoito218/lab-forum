@@ -10,6 +10,8 @@ type Post = {
   content: string;
   created_at: string;
   updated_at: string;
+  like_count: number;
+  liked_by_me: boolean;
 };
 
 const getPosts = async (): Promise<Post[]> => {

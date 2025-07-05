@@ -108,3 +108,30 @@ def delete_post(post_id: int, db: Session = Depends(get_db), current_user: User 
     db.delete(post)
     db.commit()
     return {"detail": f"Post {post_id} deleted"}
+
+@router.get("/me", response_model=List[PostResponse])
+def read_my_posts(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+    posts = (
+            db.query(models.Post)
+            .filter(models.Post.user_id == current_user.id)
+            .order_by(models.Post.created_at.desc())
+            .all()
+        )
+    
+    result = []
+
+    for post in posts:
+        like_count = db.query(Like).filter(Like.post_id == post.id).count()
+        liked_by_me = (
+            db.query(Like)
+            .filter(Like.post_id == post.id, Like.user_id == current_user.id)
+            .first() is not None
+        )
+
+        post_data = PostResponse.from_orm(post)
+        post_data.like_count = like_count
+        post_data.liked_by_me = liked_by_me
+
+        result.append(post_data)
+
+    return result
