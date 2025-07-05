@@ -27,11 +27,11 @@ const SearchForm = () => {
         value={keyword} 
         onChange={(e) => setKeyword(e.target.value)} 
         placeholder='Search...' 
-        className='border border-gray-300 rounded-l px-2 py-1 focus:outline-none' 
+        className='border border-gray-300 rounded-l px-2 py-2 focus:outline-none' 
       />
       <button
         type='submit'
-        className='bg-blue-500 text-white px-3 py-1 rounded-r hover:bg-blue-600'
+        className='bg-blue-500 text-white px-3 py-2 rounded-r hover:bg-blue-600 cursor-pointer'
       >
         検索
       </button>
