@@ -18,7 +18,12 @@ def get_db():
 
 @router.get("/", response_model=List[PostResponse])
 def read_posts(db: Session = Depends(get_db)):
-    posts = db.query(models.Post).all()
+    posts = (
+        db.query(models.Post)
+        .order_by(models.Post.updated_at.desc())
+        .limit(20)
+        .all()
+    )
     return posts
 
 @router.post("/", response_model=PostResponse)
