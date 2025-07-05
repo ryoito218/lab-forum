@@ -14,8 +14,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body className='bg-gray-100 text-gray-900'>
         <header className='flex justify-between items-center px-6 py-4 bg-white shadow'>
           <h1 className='text-xl font-bold'>研究室掲示板</h1>
-          <SearchForm />
-          <LogoutButton />
+          <div className='flex items-center space-x-4'>
+            <SearchForm />
+            <LogoutButton />
+          </div>
         </header>
         <main className='max-w-4xl mx-auto py-6 px-4'>{children}</main>
       </body>
