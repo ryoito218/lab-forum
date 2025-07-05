@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import Cookies from 'js-cookie';
 
 type Post = {
@@ -107,8 +108,10 @@ const SearchPage: React.FC = () => {
       <ul className="space-y-4">
         {posts.map(post => (
           <li key={post.id} className="p-4 bg-white rounded shadow">
-            <h3 className="text-lg font-semibold">{post.title}</h3>
-            <p className="text-gray-600 text-sm">{post.content.slice(0, 100)}...</p>
+            <Link href={`/posts/${post.id}`} className='block'>
+              <h3 className="text-lg font-semibold">{post.title}</h3>
+              <p className="text-gray-600 text-sm">{post.content.slice(0, 100)}...</p>
+            </Link>
             <p className="text-xs text-gray-400">
               {new Date(post.created_at).toLocaleString()}
             </p>
