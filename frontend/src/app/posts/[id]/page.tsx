@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import LikeButton from '@/components/LikeButton';
+import BackButton from '@/components/BackButton';
 import PostActions from './PostActions';
 import CommentsSection from './CommentsSection';
 
@@ -58,11 +59,12 @@ const PostDetailPage = async ({ params }: Props ) => {
       <PostActions postId={post.id} postUserId={post.user_id} />
       
       <div className='mt-4'>
-        <Link href='/posts'>
+        <BackButton />
+        {/* <Link href='/posts'>
           <button className='bg-gray-300 text-gray-800 px-4 py-2 rounded cursor-pointer'>
             ← 投稿一覧に戻る
           </button>
-        </Link>
+        </Link> */}
       </div>
 
       <div className='mt-4'>
