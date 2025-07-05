@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import SearchForm from './SearchForm';
 import LogoutButton from './LogoutButton';
@@ -12,7 +13,9 @@ const NavBar = () => {
 
   return (
     <header className='flex justify-between items-center px-6 py-4 bg-white shadow'>
-      <h1 className='text-xl font-bold'>研究室掲示板</h1>
+      <Link href={'/'} className='text-xl font-bold cursor-pointer'>
+        研究室掲示板
+      </Link>
       <div className='flex items-center space-x-4'>
         <SearchForm />
         <LogoutButton />
