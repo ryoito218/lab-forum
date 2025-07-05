@@ -77,3 +77,10 @@ class CommentResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class SearchResponse(BaseModel):
+    items: List[PostResponse]
+    total: int
+
+    class Config:
+        orm_mode = True
