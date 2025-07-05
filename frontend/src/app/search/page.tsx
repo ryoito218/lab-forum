@@ -134,7 +134,7 @@ const SearchPage: React.FC = () => {
 
       <div className="mb-4">
         <label className="mr-2 font-medium">並べ替え:</label>
-        <select value={sort} onChange={handleSortChange} className="border p-1">
+        <select value={sort} onChange={handleSortChange} className="border border-gray-300 rounded px-2 py-1 focus:outline-none">
           {SORT_OPTIONS.map(opt => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
