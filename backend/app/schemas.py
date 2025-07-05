@@ -6,8 +6,9 @@ class TagResponse(BaseModel):
     id: int
     name: str
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class PostCreate(BaseModel):
     title: str
@@ -23,10 +24,13 @@ class PostResponse(BaseModel):
     user_id: int
     created_at: datetime
     updated_at: datetime
-    tags: List[TagResponse]
+    tags: List[TagResponse] = []
+    like_count: int = 0
+    liked_by_me: bool = False
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class PostUpdate(BaseModel):
     title: Optional[str] = None
@@ -38,8 +42,9 @@ class CategoryResponse(BaseModel):
     id: int
     name: str
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class CategoryCreate(BaseModel):
     name: str
