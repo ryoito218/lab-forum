@@ -2,13 +2,15 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import PostsList from '@/components/PostsList';
 
 type Post = {
   id: number;
   title: string;
   content: string;
   created_at: string;
-}
+  updated_at: string;
+};
 
 const getPosts = async (): Promise<Post[]> => {
   const cookieStore = cookies();
@@ -47,17 +49,8 @@ const PostListPage = async () => {
         </Link>
       </div>
       
-      <ul className='space-y-4'>
-        {posts.map((post) => (
-          <li key={post.id} className='p-4 bg-white rounded shadow'>
-            <h3 className='text-lg font-bold'><Link href={`/posts/${post.id}`}>{post.title}</Link></h3>
-            <p className='text-gray-700'>{post.content}</p>
-            <p className='text-sm text-gray-400 mt-2'>
-              {new Date(post.created_at).toLocaleString()}
-            </p>
-          </li>
-        ))}
-      </ul>
+      <PostsList posts={posts} />
+      
     </div>
   );
 };

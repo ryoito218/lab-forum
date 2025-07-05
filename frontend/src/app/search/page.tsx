@@ -4,12 +4,14 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
+import PostsList from '@/components/PostsList';
 
 type Post = {
   id: number;
   title: string;
   content: string;
   created_at: string;
+  updated_at: string;
 };
 
 type SearchResponse = {
@@ -143,7 +145,9 @@ const SearchPage: React.FC = () => {
         </select>
       </div>
 
-      <ul className="space-y-4">
+      <PostsList posts={posts} />
+
+      {/* <ul className="space-y-4">
         {posts.map(post => (
           <li key={post.id} className="p-4 bg-white rounded shadow">
             <Link href={`/posts/${post.id}`} className="block">
@@ -157,7 +161,8 @@ const SearchPage: React.FC = () => {
             </p>
           </li>
         ))}
-      </ul>
+      </ul> */}
+
 
       {loading && <p className="text-center mt-4">Loading...</p>}
 
