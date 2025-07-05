@@ -3,6 +3,7 @@
 import React, {useState} from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import SimpleMarkdownEditor from '@/components/SimpleMarkdownEditor';
 
 interface Tag {
   id: number;
@@ -118,12 +119,9 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post, categories }) => {
 
         <div>
           <label className='block mb-1'>本文（Markdown可）</label>
-          <textarea
-            name='content'
-            rows={6}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className='w-full px-3 py-2 border rounded'
+          <SimpleMarkdownEditor 
+            markdown={content}
+            setMarkdown={setContent}
           />
         </div>
 

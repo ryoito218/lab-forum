@@ -110,13 +110,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ categories }) => {
             markdown={content}
             setMarkdown={setContent}
           />
-          {/* <textarea
-            name='content'
-            rows={6}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className='w-full px-3 py-2 border rounded'
-          /> */}
         </div>
 
         {error && <p className='text-red-500 text-sm'>{error}</p>}
