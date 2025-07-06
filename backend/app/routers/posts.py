@@ -4,7 +4,7 @@ from app import models
 from app.database import SessionLocal
 from app.schemas import PostCreate, PostResponse, PostUpdate
 from app.dependencies import get_current_user
-from app.models import User
+from app.models import User, Like
 from typing import List
 
 router = APIRouter(prefix="/posts", tags=["Posts"], dependencies=[Depends(get_current_user)])
@@ -17,9 +17,24 @@ def get_db():
         db.close()
 
 @router.get("/", response_model=List[PostResponse])
-def read_posts(db: Session = Depends(get_db)):
-    posts = db.query(models.Post).all()
-    return posts
+def read_posts(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    posts = (
+        db.query(models.Post)
+        .order_by(models.Post.updated_at.desc())
+        .limit(20)
+        .all()
+    )
+    result = []
+    for post in posts:
+        like_count = db.query(Like).filter(Like.post_id == post.id).count()
+        liked_by_me = (
+            db.query(Like).filter(Like.post_id == post.id, Like.user_id == current_user.id).first() is not None
+        )
+        post_data = PostResponse.from_orm(post)
+        post_data.like_count = like_count
+        post_data.liked_by_me = liked_by_me
+        result.append(post_data)
+    return result
 
 @router.post("/", response_model=PostResponse)
 def create_post(post_data: PostCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
@@ -93,3 +108,30 @@ def delete_post(post_id: int, db: Session = Depends(get_db), current_user: User 
     db.delete(post)
     db.commit()
     return {"detail": f"Post {post_id} deleted"}
+
+@router.get("/me", response_model=List[PostResponse])
+def read_my_posts(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+    posts = (
+            db.query(models.Post)
+            .filter(models.Post.user_id == current_user.id)
+            .order_by(models.Post.created_at.desc())
+            .all()
+        )
+    
+    result = []
+
+    for post in posts:
+        like_count = db.query(Like).filter(Like.post_id == post.id).count()
+        liked_by_me = (
+            db.query(Like)
+            .filter(Like.post_id == post.id, Like.user_id == current_user.id)
+            .first() is not None
+        )
+
+        post_data = PostResponse.from_orm(post)
+        post_data.like_count = like_count
+        post_data.liked_by_me = liked_by_me
+
+        result.append(post_data)
+
+    return result

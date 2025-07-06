@@ -1,12 +1,55 @@
 import React from 'react';
+import { cookies } from 'next/headers';
+import { Heart, HeartIcon } from 'lucide-react';
+import { redirect } from 'next/navigation';
+import PostsList from '@/components/PostsList';
 
-const HomePage = () => {
+type Post = {
+  id: number;
+  title: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  like_count: number;
+  liked_by_me: boolean;
+}
+
+const getPosts = async (): Promise<Post[]> => {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("access_token")?.value;
+
+  if (!token) {
+    redirect("/login");
+  }
+
+  const res = await fetch("http://backend:8000/posts", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    cache: "no-store",
+  });
+
+  if (res.status == 401) {
+    redirect('/login');
+  };
+
+  if (!res.ok) throw new Error("取得に失敗しました");
+  return res.json();
+};
+
+const HomePage = async () => {
+  const posts = await getPosts();
+
   return (
-    <div>
-      <h2 className='text-2xl font-semibold mb-4'>ようこそ！</h2>
-      <p className='text-grey-700'>
-        研究室掲示板へようこそ！投稿を見るには上部のナビゲーションからアクセスしてください！
-      </p>
+    <div className='max-w-3xl mx-auto p-6'>
+      <div className='flex justify-between items-center mb-4'>
+        <h2 className='text-2xl font-semibold'>自分の投稿一覧</h2>
+      </div>
+      {posts.length === 0 ? (
+        <p className='text-gray-500'>まだ投稿がありません</p>
+      ): (
+        <PostsList posts={posts}/>
+      )}
     </div>
   );
 };

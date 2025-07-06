@@ -4,7 +4,7 @@ from sqlalchemy import or_, asc, desc, func
 from typing import List
 from app import models, schemas
 from app.dependencies import get_db, get_current_user
-from app.models import User
+from app.models import User, Like
 
 router = APIRouter(prefix="/search", tags=["Search"])
 
@@ -57,5 +57,21 @@ def search_posts(
 
     if not items and total:
         raise HTTPException(status_code=404, detail="Page out of range")
+    
+    result_items = []
+    for post in items:
+        like_count = db.query(Like).filter(Like.post_id == post.id).count()
+        liked_by_me = (
+            db.query(Like)
+            .filter(Like.post_id == post.id, Like.user_id == current_user.id)
+            .first() 
+            is not None
+        )
 
-    return {"items": items, "total": total}
+        post_data = schemas.PostResponse.from_orm(post)
+        post_data.like_count = like_count
+        post_data.liked_by_me = liked_by_me
+
+        result_items.append(post_data)
+
+    return {"items": result_items, "total": total}
