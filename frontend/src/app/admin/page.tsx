@@ -168,10 +168,10 @@ const AdminPage = () => {
             <li key={u.id} className='flex justify-between items-center'>
               <span>{u.name} ({u.email}) - {u.role}</span>
               <div>
-                <button onClick={() => router.push(`/admin/users/${u.id}/edit`)} className='text-blue-600 mr-2 cursor-pointer'>
+                <button onClick={() => router.push(`/admin/users/${u.id}/edit`)} className='text-blue-600 mr-2 hover:underline cursor-pointer'>
                   編集
                 </button>
-                <button onClick={() => handleDeleteUser(u.id)} className='text-red-600 cursor-pointer'>
+                <button onClick={() => handleDeleteUser(u.id)} className='text-red-600 hover:underline cursor-pointer'>
                   削除
                 </button>
               </div>
