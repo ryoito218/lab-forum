@@ -49,18 +49,26 @@ class CategoryResponse(BaseModel):
 class CategoryCreate(BaseModel):
     name: str
 
-class CategoryCreate(BaseModel):
+class CategoryUpdate(BaseModel):
     name: str
 
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
+    role: Optional[str] = "normal"
+
+class UserUpdate(BaseModel):
+    name: Optional[str]
+    email: Optional[EmailStr]
+    password: Optional[str]
+    role: Optional[str]
 
 class UserResponse(BaseModel):
     id: int
     name: str
     email: EmailStr
+    password: str
     role: str
 
     class Config:
