@@ -124,41 +124,46 @@ const AdminPage = () => {
 
       <section>
         <h2 className='text-2xl mb-4'>ユーザ管理</h2>
-        <form onSubmit={handleCreateUser} className='flex gap-2 mb-4'>
-          <input
-            className='border p-2'
-            placeholder='名前'
-            type='text'
-            value={newUserName}
-            onChange={e => setNewUserName(e.target.value)}
-          />
-          <input
-            className='border p-2'
-            placeholder='email'
-            type='email'
-            value={newUserEmail}
-            onChange={e => setNewUserEmail(e.target.value)}
-          />
-          <input 
-            className='border p-2'
-            placeholder='password'
-            type="password"
-            value={newUserPassword}
-            onChange={e => setNewUserPassword(e.target.value)}
-          />
-          <select 
-            className='border p-2'
-            value={newUserRole}
-            onChange={e => setNewUserRole(e.target.value as 'normal' | 'admin')}
-          >
-            <option value="normal">normal</option>
-            <option value="admin">admin</option>
-          </select>
-          <button type='submit' className='bg-blue-600 text-white px-4 rounded cursor-pointer'>
-            追加
-          </button>
+        <form onSubmit={handleCreateUser} className='space-y-4'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <input
+              className='w-full border px-3 py-2 rounded'
+              placeholder='名前'
+              type='text'
+              value={newUserName}
+              onChange={e => setNewUserName(e.target.value)}
+            />
+            <input
+              className='w-full border px-3 py-2 rounded'
+              placeholder='email'
+              type='email'
+              value={newUserEmail}
+              onChange={e => setNewUserEmail(e.target.value)}
+            />
+            <input 
+              className='w-full border px-3 py-2 rounded'
+              placeholder='password'
+              type="password"
+              value={newUserPassword}
+              onChange={e => setNewUserPassword(e.target.value)}
+            />
+            <select 
+              className='w-full border px-3 py-2 rounded'
+              value={newUserRole}
+              onChange={e => setNewUserRole(e.target.value as 'normal' | 'admin')}
+            >
+              <option value="normal">normal</option>
+              <option value="admin">admin</option>
+            </select>
+          </div>
+          <div className='text-center mt-2 mb-6'>
+            <button type='submit' className='w-32 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700'>
+              追加
+            </button>
+          </div>
         </form>
-        <ul className='border rounded p-4 space-y-2'>
+        
+        <ul className='border rounded p-4 space-y-2 w-full'>
           {users.map(u => (
             <li key={u.id} className='flex justify-between items-center'>
               <span>{u.name} ({u.email}) - {u.role}</span>
@@ -175,34 +180,35 @@ const AdminPage = () => {
         </ul>
       </section>
 
-      <section>
-        <h2 className='text-2xl mb-4'>カテゴリ管理</h2>
-        <form onSubmit={handleCreateCategory} className='flex gap-2 mb-4'>
+      <section className='space-y-4'>
+        <h2 className='text-2xl mb-2'>カテゴリ管理</h2>
+        
+        <form onSubmit={handleCreateCategory} className='flex gap-2 max-w-xl'>
           <input
-            className='border p-2'
+            className='flex-1 border px-3 py-2 rounded'
             placeholder='カテゴリ名'
             type="text"
             value={newCategoryName}
             onChange={e => setNewCategoryName(e.target.value)}
           />
-          <button type='submit' className='bg-green-600 text-white px-4 rounded cursor-pointer'>
+          <button type='submit' className='bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700'>
             追加
           </button>
         </form>
-        <ul className='border rounded p-4 space-y-2'>
+        <ul className='border rounded p-4 space-y-2 w-full'>
           {categories.map(c => (
             <li key={c.id} className='flex justify-between items-center'>
               <span>{c.name}</span>
               <div>
                 <button
                   onClick={() => router.push(`/admin/categories/${c.id}/edit`)}
-                  className='text-blue-600 mr-2 cursor-pointer'
+                  className='text-blue-600 mr-2 hover:underline'
                 >
                   編集
                 </button>
                 <button
                   onClick={() => handleDeleteCategory(c.id)}
-                  className='text-red-600 cursor-pointer'
+                  className='text-red-600 hover:underline'
                 >
                   削除
                 </button>
