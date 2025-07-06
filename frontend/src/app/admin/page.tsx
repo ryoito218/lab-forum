@@ -157,7 +157,7 @@ const AdminPage = () => {
             </select>
           </div>
           <div className='text-center mt-2 mb-6'>
-            <button type='submit' className='w-32 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700'>
+            <button type='submit' className='w-32 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer'>
               追加
             </button>
           </div>
@@ -191,7 +191,7 @@ const AdminPage = () => {
             value={newCategoryName}
             onChange={e => setNewCategoryName(e.target.value)}
           />
-          <button type='submit' className='bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700'>
+          <button type='submit' className='bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 cursor-pointer'>
             追加
           </button>
         </form>
@@ -202,13 +202,13 @@ const AdminPage = () => {
               <div>
                 <button
                   onClick={() => router.push(`/admin/categories/${c.id}/edit`)}
-                  className='text-blue-600 mr-2 hover:underline'
+                  className='text-blue-600 mr-2 hover:underline cursor-pointer'
                 >
                   編集
                 </button>
                 <button
                   onClick={() => handleDeleteCategory(c.id)}
-                  className='text-red-600 hover:underline'
+                  className='text-red-600 hover:underline cursor-pointer'
                 >
                   削除
                 </button>
