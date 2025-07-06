@@ -23,8 +23,6 @@ const NavBar = () => {
     { label: '投稿一覧', href: '/posts' }
   ]
 
-  if (pathname === '/login') return null;
-
   const getHeaders = () => {
     const token = Cookies.get("access_token");
     return {
@@ -45,6 +43,8 @@ const NavBar = () => {
     };
     fetchUser();
   }, []);
+
+  if (pathname === '/login') return null;
 
   return (
     <header className='flex justify-between items-center px-6 py-4 bg-white shadow'>

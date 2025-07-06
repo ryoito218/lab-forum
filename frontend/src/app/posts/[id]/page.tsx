@@ -49,7 +49,7 @@ const PostDetailPage = async ({ params }: Props ) => {
   const post: Post = await res.json();
 
   return (
-    <div className='max-w-3xl mx-auto p-6'>
+    <div className='max-w-3xl mx-auto mt-6 px-4 bg-white rounded shadow p-6'>
       <h1 className='text-2xl font-bold mb-4'>{post.title}</h1>
       <LikeButton postId={post.id} />
       <p className='text-sm text-gray-500'>
