@@ -129,7 +129,7 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post, categories }) => {
 
         <button
           type='submit'
-          className='w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700'
+          className='w-full bg-blue-600 text-white py-2 rounded cursor-pointer hover:bg-blue-700'
         >
           更新
         </button>
