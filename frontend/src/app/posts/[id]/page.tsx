@@ -36,7 +36,7 @@ const PostDetailPage = async ({ params }: Props ) => {
 
   if (res.status == 401) {
     redirect('/login');
-  }
+  };
 
   if (!res.ok) {
     return (

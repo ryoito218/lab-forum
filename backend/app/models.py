@@ -20,8 +20,8 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     posts = relationship('Post', back_populates='author')
-    comments = relationship('Comment', back_populates='user')
-    likes = relationship('Like', back_populates='user')
+    comments = relationship('Comment', back_populates='user', cascade='all, delete-orphan', passive_deletes=True)
+    likes = relationship('Like', back_populates='user', cascade='all, delete-orphan', passive_deletes=True)
 
 class Category(Base):
     __tablename__ = 'categories'
@@ -60,8 +60,8 @@ class Comment(Base):
     __tablename__ = 'comments'
 
     id = Column(Integer, primary_key=True)
-    post_id = Column(Integer, ForeignKey('posts.id'), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     content = Column(Text, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -72,8 +72,8 @@ class Like(Base):
     __tablename__ = 'likes'
 
     id = Column(Integer, primary_key=True)
-    post_id = Column(Integer, ForeignKey('posts.id'), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
 
     post = relationship('Post', back_populates='likes')
     user = relationship('User', back_populates='likes')
