@@ -14,7 +14,7 @@ router = APIRouter(
     dependencies=[Depends(get_current_admin)],
 )
 
-@router.get("/usres", response_model=List[UserResponse])
+@router.get("/users", response_model=List[UserResponse])
 def list_users(db: Session = Depends(get_db)):
     return db.query(User).all()
 
@@ -37,7 +37,7 @@ def create_user(
 
     db.add(user)
     db.commit()
-    db.refresh()
+    db.refresh(user)
     return user
 
 @router.put("/users/{user_id}", response_model=UserResponse)

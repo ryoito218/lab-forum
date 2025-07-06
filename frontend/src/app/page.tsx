@@ -29,6 +29,10 @@ const getPosts = async (): Promise<Post[]> => {
     cache: "no-store",
   });
 
+  if (res.status == 401) {
+    redirect('/login');
+  };
+
   if (!res.ok) throw new Error("取得に失敗しました");
   return res.json();
 };

@@ -32,7 +32,7 @@ const AdminPage = () => {
     const token = Cookies.get("access_token");
     return {
       'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(token && { Authorization: `Bearer ${token}` }),
     };
   };
 
@@ -40,8 +40,8 @@ const AdminPage = () => {
     (async () => {
       const headers = getHeaders();
       const [uRes, cRes] = await Promise.all([
-        fetch('http://localhost:8000/admin/users', { headers }),
-        fetch('http://localhost:8000/admin/categories', {headers}),
+        fetch('http://localhost:8000/admin/users', { headers, credentials: "include" }),
+        fetch('http://localhost:8000/admin/categories', { headers, credentials: "include" }),
       ]);
       if (uRes.ok) setUsers(await uRes.json());
       if (cRes.ok) setCategories(await cRes.json());
@@ -128,6 +128,13 @@ const AdminPage = () => {
             className='border p-2'
             placeholder='email'
             type='email'
+            value={newUserEmail}
+            onChange={e => setNewUserEmail(e.target.value)}
+          />
+          <input 
+            className='border p-2'
+            placeholder='password'
+            type="password"
             value={newUserPassword}
             onChange={e => setNewUserPassword(e.target.value)}
           />
