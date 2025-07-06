@@ -26,7 +26,7 @@ const LoginPage = () => {
 
       const data = await res.json();
       Cookies.set("access_token", data.access_token);
-      router.push("/posts");
+      router.push("/");
     } catch (err) {
       setError((err as Error).message);
     }
