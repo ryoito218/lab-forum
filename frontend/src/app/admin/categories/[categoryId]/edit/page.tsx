@@ -62,7 +62,7 @@ const EditCategoryPage = () => {
   if (!cat) return <p className='p-4 text-red-500'>カテゴリーが見つかりません</p>
 
   return (
-    <div className='p-6 max-w-md mx-auto'>
+    <div className='p-6 max-w-md mx-auto bg-white rounded shadow mt-6'>
       <h1 className='text-2xl font-bold mb-4'>カテゴリー編集</h1>
       <form onSubmit={onSubmit} className='space-y-4'>
         <div>
