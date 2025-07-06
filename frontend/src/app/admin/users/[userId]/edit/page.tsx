@@ -108,13 +108,13 @@ const EditUserPage = () => {
           />
         </div>
         <div className='flex gap-2'>
-          <button type='submit' className='flex-1 py-2 bg-blue-600 text-white rounded'>
+          <button type='submit' className='flex-1 py-2 bg-blue-600 text-white rounded cursor-pointer'>
             保存
           </button>
           <button
             type='button'
             onClick={() => router.push('/admin')}
-            className='flex-1 py-2 bg-gray-300 rounded'
+            className='flex-1 py-2 bg-gray-300 rounded cursor-pointer'
           >
             キャンセル
           </button>

@@ -139,7 +139,7 @@ const AdminPage = () => {
             <option value="normal">normal</option>
             <option value="admin">admin</option>
           </select>
-          <button type='submit' className='bg-blue-600 text-white px-4 rounded'>
+          <button type='submit' className='bg-blue-600 text-white px-4 rounded cursor-pointer'>
             追加
           </button>
         </form>
@@ -148,10 +148,10 @@ const AdminPage = () => {
             <li key={u.id} className='flex justify-between items-center'>
               <span>{u.name} ({u.email}) - {u.role}</span>
               <div>
-                <button onClick={() => router.push(`/admin/users/${u.id}/edit`)} className='text-blue-600 mr-2'>
+                <button onClick={() => router.push(`/admin/users/${u.id}/edit`)} className='text-blue-600 mr-2 cursor-pointer'>
                   編集
                 </button>
-                <button onClick={() => handleDeleteUser(u.id)} className='text-red-600'>
+                <button onClick={() => handleDeleteUser(u.id)} className='text-red-600 cursor-pointer'>
                   削除
                 </button>
               </div>
@@ -170,7 +170,7 @@ const AdminPage = () => {
             value={newCategoryName}
             onChange={e => setNewCategoryName(e.target.value)}
           />
-          <button type='submit' className='bg-green-600 text-white px-4 rounded'>
+          <button type='submit' className='bg-green-600 text-white px-4 rounded cursor-pointer'>
             追加
           </button>
         </form>
@@ -181,13 +181,13 @@ const AdminPage = () => {
               <div>
                 <button
                   onClick={() => router.push(`/admin/categories/${c.id}/edit`)}
-                  className='text-blue-600 mr-2'
+                  className='text-blue-600 mr-2 cursor-pointer'
                 >
                   編集
                 </button>
                 <button
                   onClick={() => handleDeleteCategory(c.id)}
-                  className='text-red-600'
+                  className='text-red-600 cursor-pointer'
                 >
                   削除
                 </button>
