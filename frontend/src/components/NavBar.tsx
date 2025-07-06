@@ -1,13 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import SearchForm from './SearchForm';
 import LogoutButton from './LogoutButton';
+import Cookies from 'js-cookie';
+
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  role: 'normal' | 'admin';
+}
 
 const NavBar = () => {
   const pathname = usePathname();
+  const [user, setUser] = useState<User | null>(null);
 
   const navItems = [
     { label: 'ホーム', href: '/' },
@@ -15,6 +24,27 @@ const NavBar = () => {
   ]
 
   if (pathname === '/login') return null;
+
+  const getHeaders = () => {
+    const token = Cookies.get("access_token");
+    return {
+      'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
+    };
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch('http://localhost:8000/auth/me', {
+        headers: getHeaders(),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data);
+      }
+    };
+    fetchUser();
+  }, []);
 
   return (
     <header className='flex justify-between items-center px-6 py-4 bg-white shadow'>
@@ -34,6 +64,9 @@ const NavBar = () => {
               {item.label}
             </Link>
           ))}
+          {user?.role === 'admin' && (
+            <Link href={'/admin'} className={`hover:underline ${pathname === '/admin' ? 'font-bold text-blue-600' : 'text-gray-700' }` }>管理</Link>
+          )}
         </nav>
       </div>
       
