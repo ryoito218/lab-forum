@@ -33,6 +33,15 @@ const EditUserPage = () => {
     (async () => {
       const headers = getHeaders();
       const res = await fetch('http://localhost:8000/admin/users', { headers });
+
+      if (res.status === 401) {
+        router.push('/login');
+      }
+
+      if (res.status === 403) {
+        router.push('/');
+      };
+
       const list: User[] = await res.json();
       const u = list.find(u => u.id === Number(userId));
       if (u) {

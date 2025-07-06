@@ -28,6 +28,15 @@ const EditCategoryPage = () => {
     (async () => {
       const headers = getHeaders();
       const res = await fetch('http://localhost:8000/admin/categories', { headers });
+
+      if (res.status === 401) {
+        router.push('/login');
+      }
+
+      if (res.status === 403) {
+        router.push('/');
+      };
+
       const list: Category[] = await res.json();
       const c = list.find(c => c.id === Number(categoryId));
       if (c) {

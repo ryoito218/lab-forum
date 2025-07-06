@@ -43,6 +43,15 @@ const AdminPage = () => {
         fetch('http://localhost:8000/admin/users', { headers, credentials: "include" }),
         fetch('http://localhost:8000/admin/categories', { headers, credentials: "include" }),
       ]);
+
+      if (uRes.status === 401 || cRes.status === 401) {
+        router.push('/login');
+      }
+
+      if (uRes.status === 403 || cRes.status === 403) {
+        router.push('/');
+      };
+
       if (uRes.ok) setUsers(await uRes.json());
       if (cRes.ok) setCategories(await cRes.json());
     })();
@@ -61,6 +70,7 @@ const AdminPage = () => {
         role: newUserRole,
       }),
     });
+
     if (res.ok) {
       const created: User = await res.json();
       setUsers(prev => [...prev, created]);
