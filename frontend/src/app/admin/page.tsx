@@ -3,8 +3,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { AwardIcon } from 'lucide-react';
-
 
 type User = {
   id: number;
@@ -121,7 +119,7 @@ const AdminPage = () => {
   };
 
   return (
-    <div className='p-6 max-w-3xl mx-auto space-y-8'>
+    <div className='max-w-3xl mx-auto p-6 bg-white rounded shadow mt-6 space-y-8'>
       <h1 className='text-3xl font-bold'>管理者ページ</h1>
 
       <section>
