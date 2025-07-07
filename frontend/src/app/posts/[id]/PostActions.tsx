@@ -37,7 +37,7 @@ const PostActions: React.FC<Props> = ({ postId, postUserId }) => {
   return (
     <div className='flex space-x-4 mt-6'>
       <button
-        onClick={() => router.push(`/posts/${postId}/edit`)}
+        onClick={() => router.replace(`/posts/${postId}/edit`)}
         className='bg-blue-500 text-white px-4 py-2 rounded cursor-pointer inline-block'
       >
         編集する
