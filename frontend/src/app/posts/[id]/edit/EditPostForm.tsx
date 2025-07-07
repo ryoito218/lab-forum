@@ -67,7 +67,7 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post, categories }) => {
       }
 
       if (!res.ok) return setError('更新に失敗しました');
-      router.push('/posts');
+      router.replace(`/posts/${post.id}`);
     } catch (err) {
       setError((err as Error).message);
     }
