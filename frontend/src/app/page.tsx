@@ -19,18 +19,19 @@ const getPosts = async (): Promise<Post[]> => {
   const token = (await cookieStore).get("access_token")?.value;
 
   if (!token) {
-    redirect("/login");
+    return redirect("/login");
   }
 
-  const res = await fetch("http://backend:8000/posts", {
+  const res = await fetch("http://backend:8000/posts/me", {
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
     cache: "no-store",
   });
 
   if (res.status == 401) {
-    redirect('/login');
+    return redirect('/login');
   };
 
   if (!res.ok) throw new Error("取得に失敗しました");
