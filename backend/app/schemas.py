@@ -59,10 +59,10 @@ class UserCreate(BaseModel):
     role: Optional[str] = "normal"
 
 class UserUpdate(BaseModel):
-    name: Optional[str]
-    email: Optional[EmailStr]
-    password: Optional[str]
-    role: Optional[str]
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+    role: Optional[str] = None
 
 class UserResponse(BaseModel):
     id: int
