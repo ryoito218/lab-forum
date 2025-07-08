@@ -12,6 +12,7 @@ export type Post = {
   updated_at: string;
   like_count: number;
   liked_by_me: boolean;
+  tags: { id: number, name: string }[];
 };
 
 const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => {
@@ -40,6 +41,16 @@ const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => {
                 <Heart className='w-6 h-6 text-gray-400' />
               )}
               <span className='text-sm text-gray-600'>{post.like_count}</span>
+            </div>
+            <div className='flex flex-wrap gap-2 mt-2'>
+              {post.tags.map(tag => (
+                <span
+                  key={tag.id}
+                  className='px-2 py-1 bg-gray-100 rounded text-sm text-gray-600'
+                >
+                  {tag.name}
+                </span>
+              ))}
             </div>
             <p className='text-sm text-gray-400 mt-2'>投稿日: {created}</p>
             <p className='text-sm text-gray-400 mt-2'>更新日: {updated}</p>
