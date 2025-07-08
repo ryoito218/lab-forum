@@ -6,17 +6,10 @@ from app import models, schemas
 from app.dependencies import get_db, get_current_user
 from app.models import User, Like, Post
 from app.schemas import PostResponse, TagResponse
+from app.routers.posts import make_post_response
 
 router = APIRouter(prefix="/search", tags=["Search"])
 
-def make_post_response(post: Post, current_user: User, db: Session):
-    pr = PostResponse.model_validate(post)
-    pr.tags = [ TagResponse.model_validate(t) for t in post.tags ]
-    pr.like_count = db.query(Like).filter(Like.post_id == post.id).count()
-    pr.liked_by_me = db.query(Like).filter(
-        Like.post_id == post.id, Like.user_id == current_user.id
-    ).first() is not None
-    return pr
 
 @router.get("/posts", response_model=schemas.SearchResponse)
 def search_posts(
