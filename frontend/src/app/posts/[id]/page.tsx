@@ -72,7 +72,7 @@ const PostDetailPage = async ({ params }: Props ) => {
             href={`/tags/${tag.name}`}
             className='px-2 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300 cursor-pointer'
           >
-            #{tag.name}
+            {tag.name}
           </Link>
         ))}
       </div>

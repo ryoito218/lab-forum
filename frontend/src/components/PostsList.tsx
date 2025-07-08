@@ -48,7 +48,7 @@ const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => {
                   key={tag.id}
                   className='px-2 py-1 bg-gray-100 rounded text-sm text-gray-600'
                 >
-                  #{tag.name}
+                  {tag.name}
                 </span>
               ))}
             </div>
