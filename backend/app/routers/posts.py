@@ -39,7 +39,8 @@ def read_posts(db: Session = Depends(get_db), current_user: User = Depends(get_c
 @router.post("/", response_model=PostResponse)
 def create_post(post_data: PostCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     tags = []
-    for tag_name in post_data.tags:
+
+    for tag_name in set(post_data.tags):
         tag = db.query(models.Tag).filter(models.Tag.name == tag_name).first()
         if not tag:
             tag = models.Tag(name=tag_name)
@@ -106,7 +107,7 @@ def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get
 
     if "tags" in update_fields and update_data.tags is not None:
         tags = []
-        for tag_name in update_data.tags:
+        for tag_name in set(update_data.tags):
             tag = db.query(models.Tag).filter(models.Tag.name == tag_name).first()
             if not tag:
                 tag = models.Tag(name=tag_name)
