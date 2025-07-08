@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from app import models
 from app.database import SessionLocal
-from app.schemas import PostCreate, PostResponse, PostUpdate
+from app.schemas import PostCreate, PostResponse, PostUpdate, TagResponse
 from app.dependencies import get_current_user
-from app.models import User, Like
+from app.models import User, Like, Post
 from typing import List
 
 router = APIRouter(prefix="/posts", tags=["Posts"], dependencies=[Depends(get_current_user)])
@@ -16,30 +16,31 @@ def get_db():
     finally:
         db.close()
 
+def make_post_response(post: Post, current_user: User, db: Session):
+    pr = PostResponse.model_validate(post)
+    pr.tags = [ TagResponse.model_validate(t) for t in post.tags ]
+    pr.like_count = db.query(Like).filter(Like.post_id == post.id).count()
+    pr.liked_by_me = db.query(Like).filter(
+        Like.post_id == post.id, Like.user_id == current_user.id
+    ).first() is not None
+    return pr
+
 @router.get("/", response_model=List[PostResponse])
 def read_posts(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     posts = (
         db.query(models.Post)
+        .options(joinedload(models.Post.tags))
         .order_by(models.Post.updated_at.desc())
         .limit(20)
         .all()
     )
-    result = []
-    for post in posts:
-        like_count = db.query(Like).filter(Like.post_id == post.id).count()
-        liked_by_me = (
-            db.query(Like).filter(Like.post_id == post.id, Like.user_id == current_user.id).first() is not None
-        )
-        post_data = PostResponse.from_orm(post)
-        post_data.like_count = like_count
-        post_data.liked_by_me = liked_by_me
-        result.append(post_data)
-    return result
+    return [ make_post_response(post, current_user, db) for post in posts ]
 
 @router.post("/", response_model=PostResponse)
 def create_post(post_data: PostCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     tags = []
-    for tag_name in post_data.tags:
+
+    for tag_name in set(post_data.tags):
         tag = db.query(models.Tag).filter(models.Tag.name == tag_name).first()
         if not tag:
             tag = models.Tag(name=tag_name)
@@ -63,35 +64,19 @@ def create_post(post_data: PostCreate, db: Session = Depends(get_db), current_us
 def read_my_posts(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     posts = (
             db.query(models.Post)
+            .options(joinedload(models.Post.tags))
             .filter(models.Post.user_id == current_user.id)
             .order_by(models.Post.created_at.desc())
             .all()
         )
-    
-    result = []
-
-    for post in posts:
-        like_count = db.query(Like).filter(Like.post_id == post.id).count()
-        liked_by_me = (
-            db.query(Like)
-            .filter(Like.post_id == post.id, Like.user_id == current_user.id)
-            .first() is not None
-        )
-
-        post_data = PostResponse.from_orm(post)
-        post_data.like_count = like_count
-        post_data.liked_by_me = liked_by_me
-
-        result.append(post_data)
-
-    return result
+    return [ make_post_response(post, current_user, db) for post in posts ] 
 
 @router.get("/{post_id}", response_model=PostResponse)
-def read_post(post_id: int, db: Session = Depends(get_db)):
-    post = db.query(models.Post).get(post_id)
+def read_post(post_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    post = db.query(models.Post).options(joinedload(models.Post.tags)).get(post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
-    return post
+    return make_post_response(post, current_user, db)
 
 @router.put("/{post_id}", response_model=PostResponse)
 def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
@@ -106,7 +91,7 @@ def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get
 
     if "tags" in update_fields and update_data.tags is not None:
         tags = []
-        for tag_name in update_data.tags:
+        for tag_name in set(update_data.tags):
             tag = db.query(models.Tag).filter(models.Tag.name == tag_name).first()
             if not tag:
                 tag = models.Tag(name=tag_name)
