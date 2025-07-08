@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app import models
 from app.database import SessionLocal
-from app.schemas import PostCreate, PostResponse, PostUpdate
+from app.schemas import PostCreate, PostResponse, PostUpdate, TagResponse
 from app.dependencies import get_current_user
-from app.models import User, Like
+from app.models import User, Like, Post
 from typing import List
 
 router = APIRouter(prefix="/posts", tags=["Posts"], dependencies=[Depends(get_current_user)])
@@ -15,6 +15,15 @@ def get_db():
         yield db
     finally:
         db.close()
+
+def make_post_response(post: Post, current_user: User, db: Session):
+    pr = PostResponse.model_validate(post)
+    pr.tags = [ TagResponse.model_validate(t) for t in post.tags ]
+    pr.like_count = db.query(Like).filter(Like.post_id == post.id).count()
+    pr.liked_by_me = db.query(Like).filter(
+        Like.post_id == post.id, Like.user_id == current_user.id
+    ).first() is not None
+    return pr
 
 @router.get("/", response_model=List[PostResponse])
 def read_posts(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
