@@ -54,7 +54,7 @@ const PostDetailPage = async ({ params }: Props ) => {
       <h1 className='text-2xl font-bold mb-4'>{post.title}</h1>
       <LikeButton postId={post.id} />
       
-      <div className='flex flex-wrap gap-2 mb-4'>
+      <div className='flex flex-wrap gap-2 mt-2'>
         {post.tags.map(tag => (
           <Link
             key={tag.id}
@@ -66,7 +66,7 @@ const PostDetailPage = async ({ params }: Props ) => {
         ))}
       </div>
       
-      <p className='text-sm text-gray-500'>
+      <p className='text-sm text-gray-400 mt-2'>
         投稿日: {new Date(post.created_at).toLocaleString()}
       </p>
       <PostContent content={post.content} />
