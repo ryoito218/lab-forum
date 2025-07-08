@@ -20,10 +20,21 @@ type Post = {
   title: string;
   content: string;
   created_at: string;
+  updated_at: string;
   tags: { id: number, name: string }[];
 };
 
 const PostDetailPage = async ({ params }: Props ) => {
+  const dtf = new Intl.DateTimeFormat('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZone: 'Asia/Tokyo',
+  });
+
   const { id } = await params;
   const cookieStore = cookies();
   const token = (await cookieStore).get("access_token")?.value;
@@ -66,9 +77,10 @@ const PostDetailPage = async ({ params }: Props ) => {
         ))}
       </div>
       
-      <p className='text-sm text-gray-400 mt-2'>
-        投稿日: {new Date(post.created_at).toLocaleString()}
-      </p>
+      <p className='text-sm text-gray-400 mt-2'>投稿日: {dtf.format(new Date(post.created_at))}</p>
+      <p className='text-sm text-gray-400 mt-2'>更新日: {dtf.format(new Date(post.updated_at))}</p>
+
+
       <PostContent content={post.content} />
 
       <PostActions postId={post.id} postUserId={post.user_id} />
