@@ -58,7 +58,7 @@ const PostDetailPage = async ({ params }: Props ) => {
         {post.tags.map(tag => (
           <Link
             key={tag.id}
-            href={`/tags/${encodeURIComponent(tag.name)}/posts`}
+            href={`/tags/${tag.name}`}
             className='px-2 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300 cursor-pointer'
           >
             #{tag.name}

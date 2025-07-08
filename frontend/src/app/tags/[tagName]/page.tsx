@@ -3,13 +3,13 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import PostsList, {Post} from '@/components/PostsList';
 
-interface TagPostsPageProps {
-  params: {
-    tagName: string;
-  };
+type Props = {
+  params: { tagName: string };
 }
 
-const TagPostsPage = async ({ params: {tagName} }: TagPostsPageProps) => {
+const TagPostsPage = async ( {params}: Props) => {
+  const { tagName } = await params;
+
   const cookieStore = cookies();
   const token = (await cookieStore).get("access_token")?.value;
   
@@ -17,7 +17,7 @@ const TagPostsPage = async ({ params: {tagName} }: TagPostsPageProps) => {
     redirect("/login");
   }
   
-  const res = await fetch(`http://backend:8000/tags/${encodeURIComponent(tagName)}/posts`, {
+  const res = await fetch(`http://backend:8000/tags/${tagName}/posts`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -33,11 +33,11 @@ const TagPostsPage = async ({ params: {tagName} }: TagPostsPageProps) => {
   const posts: Post[] = await res.json();
 
   return (
-    <div className='max-w-3l mx-auto p-6'>
+    <div className='max-w-3xl mx-auto p-6'>
       <div className='flex justify-between items-center mb-4'>
-        <h2 className='text-2xl font-semibold'>タグ: # {tagName}</h2>
-        <PostsList posts={posts} />
+        <h2 className='text-2xl font-semibold'>タグ: # {decodeURIComponent(tagName)}</h2>        
       </div>
+      <PostsList posts={posts} />
     </div>
   );
 }
