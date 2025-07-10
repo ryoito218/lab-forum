@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { Heart, HeartIcon } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import PostsList from '@/components/PostsList';
+import Link from 'next/link';
 
 type Post = {
   id: number;
@@ -12,6 +13,7 @@ type Post = {
   updated_at: string;
   like_count: number;
   liked_by_me: boolean;
+  tags: { id: number, name: string }[];
 }
 
 const getPosts = async (): Promise<Post[]> => {
@@ -45,7 +47,14 @@ const HomePage = async () => {
     <div className='max-w-3xl mx-auto p-6'>
       <div className='flex justify-between items-center mb-4'>
         <h2 className='text-2xl font-semibold'>自分の投稿一覧</h2>
+        <Link
+          href={'/likes'}
+          className='bg-blue-500 text-white px-4 py-2 rounded cursor-pointer'
+        >
+          いいねした投稿を見る
+        </Link>
       </div>
+
       {posts.length === 0 ? (
         <p className='text-gray-500'>まだ投稿がありません</p>
       ): (
