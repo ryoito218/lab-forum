@@ -28,7 +28,7 @@ const LikesPage = async () => {
 
   return (
     <div className='max-w-3xl mx-auto p-6'>
-      <h1 className='text-3xl font-bold mb-6'>いいねした投稿</h1>
+      <h2 className='text-2xl font-semibold'>いいねした投稿</h2>
       <PostsList posts={likedPosts} />
     </div>
   );
