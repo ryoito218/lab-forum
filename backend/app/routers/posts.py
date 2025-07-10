@@ -83,7 +83,7 @@ def get_liked_posts(
         .filter(models.Like.user_id == current_user.id)
         .all()
     )
-    return liked_posts
+    return [ make_post_response(post, current_user, db) for post in liked_posts ]
 
 @router.get("/{post_id}", response_model=PostResponse)
 def read_post(post_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
