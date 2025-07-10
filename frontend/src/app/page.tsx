@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { Heart, HeartIcon } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import PostsList from '@/components/PostsList';
+import Link from 'next/link';
 
 type Post = {
   id: number;
@@ -45,6 +46,14 @@ const HomePage = async () => {
     <div className='max-w-3xl mx-auto p-6'>
       <div className='flex justify-between items-center mb-4'>
         <h2 className='text-2xl font-semibold'>自分の投稿一覧</h2>
+      </div>
+      <div className='mt-8'>
+        <Link
+          href={'/likes'}
+          className='inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition'
+        >
+          いいねした投稿を見る
+        </Link>
       </div>
       {posts.length === 0 ? (
         <p className='text-gray-500'>まだ投稿がありません</p>
