@@ -70,8 +70,9 @@ class UserResponse(BaseModel):
     email: EmailStr
     role: str
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class Token(BaseModel):
     access_token: str
@@ -87,12 +88,14 @@ class CommentResponse(BaseModel):
     user_id: int
     post_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class SearchResponse(BaseModel):
     items: List[PostResponse]
     total: int
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
