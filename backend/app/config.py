@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from typing import List
 import os
 
-env_file = ".env.production" if os.getenv("ENV") == "production" else ".env"
+env_file = ".env.production" if os.getenv("ENV") == "production" else ".env.local"
 load_dotenv(env_file)
 
 class Settings(BaseSettings):
@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTE: int = 30
     DEBUG: bool = False
-    CORS_ORIGiNS: List[HttpUrl] = []
+    CORS_ORIGINS: List[HttpUrl] = []
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
