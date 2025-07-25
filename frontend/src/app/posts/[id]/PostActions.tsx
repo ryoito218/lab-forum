@@ -5,6 +5,8 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import DeletePostButton from './DeletePostButton';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 type Props = {
   postId: number;
   postUserId: number;
@@ -17,7 +19,7 @@ const PostActions: React.FC<Props> = ({ postId, postUserId }) => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const token = Cookies.get('access_token');
-      const res = await fetch('http://localhost:8000/auth/me', {
+      const res = await fetch(`${API_BASE}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
