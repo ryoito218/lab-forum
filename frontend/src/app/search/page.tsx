@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Cookies from 'js-cookie';
 import PostsList from '@/components/PostsList';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 type Post = {
   id: number;
   title: string;
@@ -54,7 +56,7 @@ const SearchPage: React.FC = () => {
         sort,
       });
       const token = Cookies.get('access_token');
-      const res = await fetch(`http://localhost:8000/search/posts?${params}`, {
+      const res = await fetch(`${API_BASE}/search/posts?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error(`Error ${res.status}`);
@@ -90,7 +92,7 @@ const SearchPage: React.FC = () => {
           sort,
         });
         const token = Cookies.get('access_token');
-        const res = await fetch(`http://localhost:8000/search/posts?${params}`, {
+        const res = await fetch(`${API_BASE}/search/posts?${params}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(`Error ${res.status}`);
