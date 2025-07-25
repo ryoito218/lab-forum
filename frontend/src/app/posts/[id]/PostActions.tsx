@@ -19,7 +19,7 @@ const PostActions: React.FC<Props> = ({ postId, postUserId }) => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const token = Cookies.get('access_token');
-      const res = await fetch(`${API_BASE}/auth/me`, {
+      const res = await fetch('/api/auth/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

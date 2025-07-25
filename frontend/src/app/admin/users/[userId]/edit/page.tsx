@@ -34,7 +34,7 @@ const EditUserPage = () => {
   useEffect(() => {
     (async () => {
       const headers = getHeaders();
-      const res = await fetch(`${API_BASE}/admin/users`, { headers });
+      const res = await fetch('/api/admin/users', { headers });
 
       if (res.status === 401) {
         router.push('/login');
@@ -64,7 +64,7 @@ const EditUserPage = () => {
     if (password.trim()) {
       body.password = password;
     }
-    await fetch(`${API_BASE}/admin/users/${userId}`, {
+    await fetch(`/api/admin/users/${userId}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify(body),

@@ -16,7 +16,7 @@ const CommentsSection: React.FC = () => {
 
   const fetchComments = async () => {
     const token = Cookies.get('access_token');
-    const res = await fetch(`${API_BASE}/posts/${postId}/comments`, {
+    const res = await fetch(`/api/posts/${postId}/comments`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -32,7 +32,7 @@ const CommentsSection: React.FC = () => {
 
   const handleDelete = async (commentId: number) => {
     const token = Cookies.get('access_token');
-    const res = await fetch(`${API_BASE}/posts/${postId}/comments/${commentId}`, {
+    const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ const CommentsSection: React.FC = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const token = Cookies.get('access_token');
-      const res = await fetch(`${API_BASE}/auth/me`, {
+      const res = await fetch('/api/auth/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

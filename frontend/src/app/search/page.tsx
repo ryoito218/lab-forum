@@ -56,7 +56,7 @@ const SearchPage: React.FC = () => {
         sort,
       });
       const token = Cookies.get('access_token');
-      const res = await fetch(`${API_BASE}/search/posts?${params}`, {
+      const res = await fetch(`/api/search/posts?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error(`Error ${res.status}`);
@@ -92,7 +92,7 @@ const SearchPage: React.FC = () => {
           sort,
         });
         const token = Cookies.get('access_token');
-        const res = await fetch(`${API_BASE}/search/posts?${params}`, {
+        const res = await fetch(`/api/search/posts?${params}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(`Error ${res.status}`);

@@ -21,7 +21,7 @@ const LikeButton = ({ postId }: Props) => {
     const token = Cookies.get('access_token');
     if (!token) return;
 
-    const likedRes = await fetch(`${API_BASE}/posts/${postId}/liked`, {
+    const likedRes = await fetch(`/api/posts/${postId}/liked`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -32,7 +32,7 @@ const LikeButton = ({ postId }: Props) => {
       setLiked(likedData.liked);
     }
 
-    const countRes = await fetch(`${API_BASE}/posts/${postId}/likes/count`, {
+    const countRes = await fetch(`/api/posts/${postId}/likes/count`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -56,7 +56,7 @@ const LikeButton = ({ postId }: Props) => {
       return;
     }
 
-    const res = await fetch(`${API_BASE}/posts/${postId}/like`, {
+    const res = await fetch(`/api/posts/${postId}/like`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

@@ -12,7 +12,7 @@ const getCategories = async (): Promise<Category[]> => {
   const token = (await cookies()).get('access_token')?.value;
   if (!token) redirect('/login');
 
-  const res = await fetch('http://backend:8000/categories', {
+  const res = await fetch('/api/categories', {
     headers: { Authorization: `Bearer ${token}` },
     cache: 'no-store',
   });

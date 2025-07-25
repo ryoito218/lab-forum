@@ -32,7 +32,7 @@ const getPost = async (id: string): Promise<Post> => {
   const token = (await cookies()).get('access_token')?.value;
   if (!token) redirect('/login');
 
-  const res = await fetch(`http://backend:8000/posts/${id}`, {
+  const res = await fetch(`/api/posts/${id}`, {
     headers: {Authorization: `Bearer ${token}`},
     cache: `no-store`,
   });
@@ -45,7 +45,7 @@ const getCategories = async (): Promise<Category[]> => {
   const token = (await cookies()).get('access_token')?.value;
   if (!token) redirect('/login');
 
-  const res = await fetch('http://backend:8000/categories', {
+  const res = await fetch('/api/categories', {
     headers: { Authorization: `Bearer ${token}` },
     cache: 'no-store',
   });
@@ -62,7 +62,7 @@ const getCurrentUser = async (): Promise<User | null> => {
   const token = (await cookies()).get('access_token')?.value;
   if (!token) return null;
 
-  const res = await fetch(`http://backend:8000/auth/me`, {
+  const res = await fetch('/api/auth/me', {
     headers: { Authorization: `Bearer ${token}` },
     cache: 'no-store',
   });

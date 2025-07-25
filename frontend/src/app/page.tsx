@@ -24,7 +24,7 @@ const getPosts = async (): Promise<Post[]> => {
     return redirect("/login");
   }
 
-  const res = await fetch("http://backend:8000/posts/me", {
+  const res = await fetch("/api/posts/me", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

@@ -35,7 +35,7 @@ const NavBar = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch(`${API_BASE}/auth/me`, {
+      const res = await fetch('/api/auth/me', {
         headers: getHeaders(),
       });
       if (res.ok) {

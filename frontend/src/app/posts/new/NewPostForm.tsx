@@ -32,7 +32,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ categories }) => {
     const tagList = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
 
     try {
-      const res = await fetch(`${API_BASE}/posts`, {
+      const res = await fetch('/api/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ const TagPostsPage = async ( {params}: Props) => {
     redirect("/login");
   }
   
-  const res = await fetch(`http://backend:8000/tags/${tagName}/posts`, {
+  const res = await fetch(`/api/tags/${tagName}/posts`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

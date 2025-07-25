@@ -53,7 +53,7 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post, categories }) => {
     });
 
     try {
-      const res = await fetch(`${API_BASE}/posts/${post.id}`, {
+      const res = await fetch(`/api/posts/${post.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

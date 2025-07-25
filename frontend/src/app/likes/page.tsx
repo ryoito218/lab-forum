@@ -11,7 +11,7 @@ const LikesPage = async () => {
     return redirect('/login');
   };
 
-  const res = await fetch('http://backend:8000/posts/liked', {
+  const res = await fetch('/api/posts/liked', {
     headers: { Authorization: `Bearer ${token}` },
     cache: 'no-store',
   });

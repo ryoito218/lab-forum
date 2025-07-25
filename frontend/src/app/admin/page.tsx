@@ -40,8 +40,8 @@ const AdminPage = () => {
     (async () => {
       const headers = getHeaders();
       const [uRes, cRes] = await Promise.all([
-        fetch(`${API_BASE}/admin/users`, { headers, credentials: "include" }),
-        fetch(`${API_BASE}/admin/categories`, { headers, credentials: "include" }),
+        fetch('/api/admin/users', { headers, credentials: "include" }),
+        fetch('/api/admin/categories', { headers, credentials: "include" }),
       ]);
 
       if (uRes.status === 401 || cRes.status === 401) {
@@ -60,7 +60,7 @@ const AdminPage = () => {
   const handleCreateUser = async (e: FormEvent) => {
     e.preventDefault();
     const headers = getHeaders();
-    const res = await fetch(`${API_BASE}/admin/users`, {
+    const res = await fetch('/api/admin/users', {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -84,7 +84,7 @@ const AdminPage = () => {
   const handleDeleteUser = async (id: number) => {
     if (!confirm('本当に削除しますか？')) return;
     const headers = getHeaders();
-    const res = await fetch(`${API_BASE}/admin/users/${id}`, {
+    const res = await fetch(`/api/admin/users/${id}`, {
       method: 'DELETE',
       headers,
     });
@@ -96,7 +96,7 @@ const AdminPage = () => {
   const handleCreateCategory = async (e: FormEvent) => {
     e.preventDefault();
     const headers = getHeaders();
-    const res = await fetch(`${API_BASE}/admin/categories`, {
+    const res = await fetch('/api/admin/categories', {
       method: 'POST',
       headers,
       body: JSON.stringify({ name: newCategoryName }),
@@ -111,7 +111,7 @@ const AdminPage = () => {
   const handleDeleteCategory = async (id: number) => {
     if (!confirm('本当に削除しますか？')) return;
     const headers = getHeaders();
-    const res = await fetch(`${API_BASE}/admin/categories/${id}`, {
+    const res = await fetch(`/api/admin/categories/${id}`, {
       method: 'DELETE',
       headers,
     });

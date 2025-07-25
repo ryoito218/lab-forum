@@ -23,7 +23,7 @@ const DeletePostButton = ({ postId }: Props) => {
       return;
     }
 
-    const res = await fetch(`${API_BASE}/posts/${postId}`, {
+    const res = await fetch(`/api/posts/${postId}`, {
       method: `DELETE`,
       headers: {
         Authorization: `Bearer ${token}`,
