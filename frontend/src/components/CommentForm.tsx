@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 type Props = {
   postId: string;
   onCommentAdded: () => void;
@@ -17,7 +19,7 @@ const CommentForm: React.FC<Props> = ({ postId, onCommentAdded }) => {
     const token = Cookies.get('access_token');
     if (!token) return setError('ログインが必要です');
 
-    const res = await fetch(`http://localhost:8000/posts/${postId}/comments`, {
+    const res = await fetch(`${API_BASE}/posts/${postId}/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
