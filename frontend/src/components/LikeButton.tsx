@@ -6,10 +6,11 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { Heart, HeartIcon } from 'lucide-react';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 type Props = {
   postId: number;
 };
-
 
 const LikeButton = ({ postId }: Props) => {
   const [liked, setLiked] = useState(false);
@@ -20,7 +21,7 @@ const LikeButton = ({ postId }: Props) => {
     const token = Cookies.get('access_token');
     if (!token) return;
 
-    const likedRes = await fetch(`http://localhost:8000/posts/${postId}/liked`, {
+    const likedRes = await fetch(`${API_BASE}/posts/${postId}/liked`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,7 +32,7 @@ const LikeButton = ({ postId }: Props) => {
       setLiked(likedData.liked);
     }
 
-    const countRes = await fetch(`http://localhost:8000/posts/${postId}/likes/count`, {
+    const countRes = await fetch(`${API_BASE}/posts/${postId}/likes/count`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -55,7 +56,7 @@ const LikeButton = ({ postId }: Props) => {
       return;
     }
 
-    const res = await fetch(`http://localhost:8000/posts/${postId}/like`, {
+    const res = await fetch(`${API_BASE}/posts/${postId}/like`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
