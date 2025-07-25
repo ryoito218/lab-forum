@@ -4,6 +4,8 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 type Props = {
   postId: number;
 };
@@ -21,7 +23,7 @@ const DeletePostButton = ({ postId }: Props) => {
       return;
     }
 
-    const res = await fetch(`http://localhost:8000/posts/${postId}`, {
+    const res = await fetch(`${API_BASE}/posts/${postId}`, {
       method: `DELETE`,
       headers: {
         Authorization: `Bearer ${token}`,
