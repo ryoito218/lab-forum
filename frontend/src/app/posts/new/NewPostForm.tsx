@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import SimpleMarkdownEditor from '@/components/SimpleMarkdownEditor';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 interface Category {
   id: number;
   name: string;
@@ -30,7 +32,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ categories }) => {
     const tagList = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
 
     try {
-      const res = await fetch('http://localhost:8000/posts', {
+      const res = await fetch(`${API_BASE}/posts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
