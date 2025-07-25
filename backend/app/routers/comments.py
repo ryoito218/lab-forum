@@ -7,7 +7,7 @@ from typing import List
 
 router = APIRouter(prefix="/posts/{post_id}/comments", tags=["Comments"])
 
-@router.post("/", response_model=schemas.CommentResponse)
+@router.post("", response_model=schemas.CommentResponse)
 def create_comment(
     post_id: int,
     comment_data: schemas.CommentCreate,
@@ -29,7 +29,7 @@ def create_comment(
     db.refresh(comment)
     return comment
 
-@router.get("/", response_model=List[schemas.CommentResponse])
+@router.get("", response_model=List[schemas.CommentResponse])
 def list_comments(
     post_id: int,
     db: Session = Depends(get_db),
