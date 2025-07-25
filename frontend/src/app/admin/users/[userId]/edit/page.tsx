@@ -34,7 +34,7 @@ const EditUserPage = () => {
   useEffect(() => {
     (async () => {
       const headers = getHeaders();
-      const res = await fetch('${API_BASE}/admin/users', { headers });
+      const res = await fetch(`${API_BASE}/admin/users`, { headers });
 
       if (res.status === 401) {
         router.push('/login');
