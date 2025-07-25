@@ -3,14 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import engine
 from . import models
 from app.routers import posts, categories, users, tags, auth, comments, likes, search, admin
+from app.config import settings
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(debug=settings.DEBUG)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

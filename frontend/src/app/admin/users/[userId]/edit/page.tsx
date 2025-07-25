@@ -3,6 +3,9 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Cookies from 'js-cookie';
+import { apiFetch } from '@/lib/api';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 type User = {
   id: number;
@@ -32,7 +35,7 @@ const EditUserPage = () => {
   useEffect(() => {
     (async () => {
       const headers = getHeaders();
-      const res = await fetch('http://localhost:8000/admin/users', { headers });
+      const res = await apiFetch('/admin/users', { headers });
 
       if (res.status === 401) {
         router.push('/login');
@@ -62,7 +65,7 @@ const EditUserPage = () => {
     if (password.trim()) {
       body.password = password;
     }
-    await fetch(`http://localhost:8000/admin/users/${userId}`, {
+    await apiFetch(`/admin/users/${userId}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify(body),

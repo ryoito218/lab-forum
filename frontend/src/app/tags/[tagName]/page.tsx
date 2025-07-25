@@ -2,6 +2,7 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import PostsList, {Post} from '@/components/PostsList';
+import { apiFetch } from '@/lib/api';
 
 type Props = {
   params: { tagName: string };
@@ -17,7 +18,7 @@ const TagPostsPage = async ( {params}: Props) => {
     redirect("/login");
   }
   
-  const res = await fetch(`http://backend:8000/tags/${tagName}/posts`, {
+  const res = await apiFetch(`/tags/${tagName}/posts`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -4,6 +4,9 @@ import React, {useState} from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import SimpleMarkdownEditor from '@/components/SimpleMarkdownEditor';
+import { apiFetch } from '@/lib/api';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 interface Tag {
   id: number;
@@ -51,7 +54,7 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post, categories }) => {
     });
 
     try {
-      const res = await fetch(`http://localhost:8000/posts/${post.id}`, {
+      const res = await apiFetch(`/posts/${post.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

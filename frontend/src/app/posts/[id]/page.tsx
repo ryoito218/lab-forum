@@ -7,6 +7,7 @@ import BackButton from '@/components/BackButton';
 import PostActions from './PostActions';
 import CommentsSection from './CommentsSection';
 import PostContent from '@/components/PostContent';
+import { apiFetch } from '@/lib/api';
 
 type Props = {
   params: {
@@ -41,7 +42,7 @@ const PostDetailPage = async ({ params }: Props ) => {
 
   if (!token) redirect("/login");
 
-  const res = await fetch(`http://backend:8000/posts/${id}`, {
+  const res = await apiFetch(`/posts/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store",
   });

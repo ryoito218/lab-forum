@@ -25,7 +25,7 @@ def make_post_response(post: Post, current_user: User, db: Session):
     ).first() is not None
     return pr
 
-@router.get("/", response_model=List[PostResponse])
+@router.get("", response_model=List[PostResponse])
 def read_posts(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     posts = (
         db.query(models.Post)
@@ -36,7 +36,7 @@ def read_posts(db: Session = Depends(get_db), current_user: User = Depends(get_c
     )
     return [ make_post_response(post, current_user, db) for post in posts ]
 
-@router.post("/", response_model=PostResponse)
+@router.post("", response_model=PostResponse)
 def create_post(post_data: PostCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     tags = []
 
