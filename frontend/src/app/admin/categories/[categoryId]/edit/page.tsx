@@ -4,6 +4,8 @@ import React, {useEffect, useState, FormEvent} from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Cookies from 'js-cookie';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 type Category = {
   id: number;
   name: string;
@@ -27,7 +29,7 @@ const EditCategoryPage = () => {
   useEffect(() => {
     (async () => {
       const headers = getHeaders();
-      const res = await fetch('http://localhost:8000/admin/categories', { headers });
+      const res = await fetch(`${API_BASE}/admin/categories`, { headers });
 
       if (res.status === 401) {
         router.push('/login');
@@ -50,7 +52,7 @@ const EditCategoryPage = () => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const headers = getHeaders();
-    await fetch(`http://localhost:8000/admin/categories/${categoryId}`, {
+    await fetch(`${API_BASE}/admin/categories/${categoryId}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify({ name }),
