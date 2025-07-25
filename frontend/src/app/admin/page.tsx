@@ -3,6 +3,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import { apiFetch } from '@/lib/api';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -40,8 +41,8 @@ const AdminPage = () => {
     (async () => {
       const headers = getHeaders();
       const [uRes, cRes] = await Promise.all([
-        fetch('/api/admin/users', { headers, credentials: "include" }),
-        fetch('/api/admin/categories', { headers, credentials: "include" }),
+        apiFetch('/admin/users', { headers, credentials: "include" }),
+        apiFetch('/admin/categories', { headers, credentials: "include" }),
       ]);
 
       if (uRes.status === 401 || cRes.status === 401) {
@@ -60,7 +61,7 @@ const AdminPage = () => {
   const handleCreateUser = async (e: FormEvent) => {
     e.preventDefault();
     const headers = getHeaders();
-    const res = await fetch('/api/admin/users', {
+    const res = await apiFetch('/admin/users', {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -84,7 +85,7 @@ const AdminPage = () => {
   const handleDeleteUser = async (id: number) => {
     if (!confirm('本当に削除しますか？')) return;
     const headers = getHeaders();
-    const res = await fetch(`/api/admin/users/${id}`, {
+    const res = await apiFetch(`/admin/users/${id}`, {
       method: 'DELETE',
       headers,
     });
@@ -96,7 +97,7 @@ const AdminPage = () => {
   const handleCreateCategory = async (e: FormEvent) => {
     e.preventDefault();
     const headers = getHeaders();
-    const res = await fetch('/api/admin/categories', {
+    const res = await apiFetch('/admin/categories', {
       method: 'POST',
       headers,
       body: JSON.stringify({ name: newCategoryName }),
@@ -111,7 +112,7 @@ const AdminPage = () => {
   const handleDeleteCategory = async (id: number) => {
     if (!confirm('本当に削除しますか？')) return;
     const headers = getHeaders();
-    const res = await fetch(`/api/admin/categories/${id}`, {
+    const res = await apiFetch(`/admin/categories/${id}`, {
       method: 'DELETE',
       headers,
     });

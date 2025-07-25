@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { apiFetch } from "@/lib/api";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -16,7 +17,7 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await apiFetch('/auth/login', {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ username: email, password }),

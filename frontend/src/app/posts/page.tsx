@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import PostsList from '@/components/PostsList';
+import { apiFetch } from '@/lib/api';
 
 type Post = {
   id: number;
@@ -23,7 +24,7 @@ const getPosts = async (): Promise<Post[]> => {
     redirect("/login");
   }
 
-  const res = await fetch("/api/posts", {
+  const res = await apiFetch("/posts", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

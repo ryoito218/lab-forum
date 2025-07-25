@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { Comment } from '@/types';
 import CommentForm from '@/components/CommentForm';
+import { apiFetch } from '@/lib/api';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -16,7 +17,7 @@ const CommentsSection: React.FC = () => {
 
   const fetchComments = async () => {
     const token = Cookies.get('access_token');
-    const res = await fetch(`/api/posts/${postId}/comments`, {
+    const res = await apiFetch(`/posts/${postId}/comments`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -32,7 +33,7 @@ const CommentsSection: React.FC = () => {
 
   const handleDelete = async (commentId: number) => {
     const token = Cookies.get('access_token');
-    const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+    const res = await apiFetch(`/posts/${postId}/comments/${commentId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -49,7 +50,7 @@ const CommentsSection: React.FC = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const token = Cookies.get('access_token');
-      const res = await fetch('/api/auth/me', {
+      const res = await apiFetch('/auth/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

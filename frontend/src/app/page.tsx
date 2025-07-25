@@ -4,6 +4,7 @@ import { Heart, HeartIcon } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import PostsList from '@/components/PostsList';
 import Link from 'next/link';
+import { apiFetch } from '@/lib/api';
 
 type Post = {
   id: number;
@@ -24,7 +25,7 @@ const getPosts = async (): Promise<Post[]> => {
     return redirect("/login");
   }
 
-  const res = await fetch("/api/posts/me", {
+  const res = await apiFetch("/posts/me", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

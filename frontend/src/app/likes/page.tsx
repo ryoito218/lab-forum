@@ -2,6 +2,7 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import PostsList, { Post } from '@/components/PostsList';
+import { apiFetch } from '@/lib/api';
 
 const LikesPage = async () => {
   const cookieStore = cookies();
@@ -11,7 +12,7 @@ const LikesPage = async () => {
     return redirect('/login');
   };
 
-  const res = await fetch('/api/posts/liked', {
+  const res = await apiFetch('/posts/liked', {
     headers: { Authorization: `Bearer ${token}` },
     cache: 'no-store',
   });

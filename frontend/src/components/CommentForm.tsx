@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
+import { apiFetch } from '@/lib/api';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -19,7 +20,7 @@ const CommentForm: React.FC<Props> = ({ postId, onCommentAdded }) => {
     const token = Cookies.get('access_token');
     if (!token) return setError('ログインが必要です');
 
-    const res = await fetch(`/api/posts/${postId}/comments`, {
+    const res = await apiFetch(`/posts/${postId}/comments/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

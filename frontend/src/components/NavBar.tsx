@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import SearchForm from './SearchForm';
 import LogoutButton from './LogoutButton';
 import Cookies from 'js-cookie';
+import { apiFetch } from '@/lib/api';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -35,7 +36,7 @@ const NavBar = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch('/api/auth/me', {
+      const res = await apiFetch('/auth/me', {
         headers: getHeaders(),
       });
       if (res.ok) {
