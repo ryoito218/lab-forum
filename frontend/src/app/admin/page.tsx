@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { apiFetch } from '@/lib/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 type User = {
   id: number;
   name: string;
@@ -56,7 +54,7 @@ const AdminPage = () => {
       if (uRes.ok) setUsers(await uRes.json());
       if (cRes.ok) setCategories(await cRes.json());
     })();
-  }, []);
+  }, [router]);
 
   const handleCreateUser = async (e: FormEvent) => {
     e.preventDefault();

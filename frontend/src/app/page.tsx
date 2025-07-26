@@ -1,6 +1,5 @@
 import React from 'react';
 import { cookies } from 'next/headers';
-import { Heart, HeartIcon } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import PostsList from '@/components/PostsList';
 import Link from 'next/link';

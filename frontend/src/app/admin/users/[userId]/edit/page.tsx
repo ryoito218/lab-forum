@@ -5,14 +5,19 @@ import { useRouter, useParams } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { apiFetch } from '@/lib/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 type User = {
   id: number;
   name: string;
   email: string;
   role: 'normal' | 'admin';
 }
+
+type UserUpdateData = {
+  name: string;
+  email: string;
+  role: 'normal' | 'admin';
+  password?: string;
+};
 
 const EditUserPage = () => {
   const router = useRouter();
@@ -55,13 +60,13 @@ const EditUserPage = () => {
       }
       setLoading(false);
     })();
-  }, [userId]);
+  }, [userId, router]);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const headers = getHeaders();
 
-    const body: Record<string, any> = { name, email, role };
+    const body: UserUpdateData = { name, email, role };
     if (password.trim()) {
       body.password = password;
     }

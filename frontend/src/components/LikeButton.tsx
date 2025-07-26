@@ -1,13 +1,11 @@
 'use client';
 
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { Heart, HeartIcon } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 type Props = {
   postId: number;
@@ -18,7 +16,7 @@ const LikeButton = ({ postId }: Props) => {
   const [likesCount, setLikesCount] = useState(0);
   const router = useRouter();
 
-  const fetchLikeStatus = async () => {
+  const fetchLikeStatus = useCallback(async () => {
     const token = Cookies.get('access_token');
     if (!token) return;
 
@@ -43,11 +41,11 @@ const LikeButton = ({ postId }: Props) => {
       const countdata = await countRes.json();
       setLikesCount(countdata.like_count);
     }
-  };
+  }, [postId]);
 
   useEffect(() => {
     fetchLikeStatus();
-  }, [postId]);
+  }, [postId, fetchLikeStatus]);
 
   const handleToggleLike = async () => {
     const token = Cookies.get('access_token');

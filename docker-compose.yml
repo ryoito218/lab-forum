@@ -20,13 +20,17 @@ services:
       - db
 
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: nextjs_app
     ports:
       - "3000:3000"
     command: npm run start
     env_file:
       - ./frontend/.env.production
+    environment:
+      - NODE_ENV=production
   
   db:
     image: postgres:15

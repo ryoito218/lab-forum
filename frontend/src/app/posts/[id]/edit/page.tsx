@@ -72,7 +72,7 @@ const getCurrentUser = async (): Promise<User | null> => {
   return res.json();
 };
 
-const EditPostPage = async (props: { params: {id: string} } ) => {
+const EditPostPage = async (props: { params: Promise<{id: string}> } ) => {
   const { id } = await props.params;
   const post = await getPost(id);
   const categories = await getCategories();
