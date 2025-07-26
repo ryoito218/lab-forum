@@ -6,24 +6,31 @@ services:
     container_name: fastapi_app
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     env_file:
-      - .env
+      - ./backend/.env.production
+    environment:
+      - ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     depends_on:
       - db
 
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: nextjs_app
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend:/app
-    command: npm run dev
+    command: npm run start
     env_file:
-      - .env
+      - ./frontend/.env.production
+    environment:
+      - NODE_ENV=production
   
   db:
     image: postgres:15

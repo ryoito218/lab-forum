@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import SearchForm from './SearchForm';
 import LogoutButton from './LogoutButton';
 import Cookies from 'js-cookie';
+import { apiFetch } from '@/lib/api';
 
 type User = {
   id: number;
@@ -33,7 +34,7 @@ const NavBar = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch('http://localhost:8000/auth/me', {
+      const res = await apiFetch('/auth/me', {
         headers: getHeaders(),
       });
       if (res.ok) {

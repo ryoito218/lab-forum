@@ -1,5 +1,6 @@
 fastapi
 uvicorn[standard]
+gunicorn
 sqlalchemy
 psycopg2-binary
 python-dotenv
@@ -8,3 +9,4 @@ pydantic[email]
 bcrypt<4.0
 python-jose[cryptography]
 python-multipart
+pydantic-settings

@@ -3,6 +3,7 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Cookies from 'js-cookie';
+import { apiFetch } from '@/lib/api';
 
 type User = {
   id: number;
@@ -10,6 +11,13 @@ type User = {
   email: string;
   role: 'normal' | 'admin';
 }
+
+type UserUpdateData = {
+  name: string;
+  email: string;
+  role: 'normal' | 'admin';
+  password?: string;
+};
 
 const EditUserPage = () => {
   const router = useRouter();
@@ -32,7 +40,7 @@ const EditUserPage = () => {
   useEffect(() => {
     (async () => {
       const headers = getHeaders();
-      const res = await fetch('http://localhost:8000/admin/users', { headers });
+      const res = await apiFetch('/admin/users', { headers });
 
       if (res.status === 401) {
         router.push('/login');
@@ -52,17 +60,17 @@ const EditUserPage = () => {
       }
       setLoading(false);
     })();
-  }, [userId]);
+  }, [userId, router]);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const headers = getHeaders();
 
-    const body: Record<string, any> = { name, email, role };
+    const body: UserUpdateData = { name, email, role };
     if (password.trim()) {
       body.password = password;
     }
-    await fetch(`http://localhost:8000/admin/users/${userId}`, {
+    await apiFetch(`/admin/users/${userId}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify(body),

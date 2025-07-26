@@ -2,6 +2,7 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import EditPostForm from './EditPostForm';
+import { apiFetch } from '@/lib/api';
 
 type Tag = {
   id: number;
@@ -32,7 +33,7 @@ const getPost = async (id: string): Promise<Post> => {
   const token = (await cookies()).get('access_token')?.value;
   if (!token) redirect('/login');
 
-  const res = await fetch(`http://backend:8000/posts/${id}`, {
+  const res = await apiFetch(`/posts/${id}`, {
     headers: {Authorization: `Bearer ${token}`},
     cache: `no-store`,
   });
@@ -45,7 +46,7 @@ const getCategories = async (): Promise<Category[]> => {
   const token = (await cookies()).get('access_token')?.value;
   if (!token) redirect('/login');
 
-  const res = await fetch('http://backend:8000/categories', {
+  const res = await apiFetch('/categories', {
     headers: { Authorization: `Bearer ${token}` },
     cache: 'no-store',
   });
@@ -62,7 +63,7 @@ const getCurrentUser = async (): Promise<User | null> => {
   const token = (await cookies()).get('access_token')?.value;
   if (!token) return null;
 
-  const res = await fetch(`http://backend:8000/auth/me`, {
+  const res = await apiFetch('/auth/me', {
     headers: { Authorization: `Bearer ${token}` },
     cache: 'no-store',
   });
@@ -71,7 +72,7 @@ const getCurrentUser = async (): Promise<User | null> => {
   return res.json();
 };
 
-const EditPostPage = async (props: { params: {id: string} } ) => {
+const EditPostPage = async (props: { params: Promise<{id: string}> } ) => {
   const { id } = await props.params;
   const post = await getPost(id);
   const categories = await getCategories();

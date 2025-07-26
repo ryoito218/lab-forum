@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import SimpleMarkdownEditor from '@/components/SimpleMarkdownEditor';
+import { apiFetch } from '@/lib/api';
 
 interface Category {
   id: number;
@@ -30,7 +31,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ categories }) => {
     const tagList = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
 
     try {
-      const res = await fetch('http://localhost:8000/posts', {
+      const res = await apiFetch('/posts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

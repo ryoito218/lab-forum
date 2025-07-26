@@ -1,26 +1,26 @@
 'use client';
 
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { Heart, HeartIcon } from 'lucide-react';
+import { apiFetch } from '@/lib/api';
 
 type Props = {
   postId: number;
 };
-
 
 const LikeButton = ({ postId }: Props) => {
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const router = useRouter();
 
-  const fetchLikeStatus = async () => {
+  const fetchLikeStatus = useCallback(async () => {
     const token = Cookies.get('access_token');
     if (!token) return;
 
-    const likedRes = await fetch(`http://localhost:8000/posts/${postId}/liked`, {
+    const likedRes = await apiFetch(`/posts/${postId}/liked`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -31,7 +31,7 @@ const LikeButton = ({ postId }: Props) => {
       setLiked(likedData.liked);
     }
 
-    const countRes = await fetch(`http://localhost:8000/posts/${postId}/likes/count`, {
+    const countRes = await apiFetch(`/posts/${postId}/likes/count`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -41,11 +41,11 @@ const LikeButton = ({ postId }: Props) => {
       const countdata = await countRes.json();
       setLikesCount(countdata.like_count);
     }
-  };
+  }, [postId]);
 
   useEffect(() => {
     fetchLikeStatus();
-  }, [postId]);
+  }, [postId, fetchLikeStatus]);
 
   const handleToggleLike = async () => {
     const token = Cookies.get('access_token');
@@ -55,7 +55,7 @@ const LikeButton = ({ postId }: Props) => {
       return;
     }
 
-    const res = await fetch(`http://localhost:8000/posts/${postId}/like`, {
+    const res = await apiFetch(`/posts/${postId}/like`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
