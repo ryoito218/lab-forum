@@ -46,7 +46,7 @@ const EditCategoryPage = () => {
       }
       setLoading(false);
     })();
-  }, [categoryId]);
+  }, [categoryId, router]);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();

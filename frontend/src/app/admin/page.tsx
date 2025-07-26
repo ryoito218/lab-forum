@@ -54,7 +54,7 @@ const AdminPage = () => {
       if (uRes.ok) setUsers(await uRes.json());
       if (cRes.ok) setCategories(await cRes.json());
     })();
-  }, []);
+  }, [router]);
 
   const handleCreateUser = async (e: FormEvent) => {
     e.preventDefault();

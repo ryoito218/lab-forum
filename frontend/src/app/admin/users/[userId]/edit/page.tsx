@@ -60,7 +60,7 @@ const EditUserPage = () => {
       }
       setLoading(false);
     })();
-  }, [userId]);
+  }, [userId, router]);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();

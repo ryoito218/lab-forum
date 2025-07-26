@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { Comment } from '@/types';
@@ -13,7 +13,7 @@ const CommentsSection: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     const token = Cookies.get('access_token');
     const res = await apiFetch(`/posts/${postId}/comments`, {
       headers: {
@@ -23,11 +23,11 @@ const CommentsSection: React.FC = () => {
     if (!res.ok) return;
     const data = await res.json();
     setComments(data);
-  };
+  }, [postId]);
 
   useEffect(() => {
     fetchComments();
-  }, [postId]);
+  }, [postId, fetchComments]);
 
   const handleDelete = async (commentId: number) => {
     const token = Cookies.get('access_token');
@@ -61,7 +61,7 @@ const CommentsSection: React.FC = () => {
 
     fetchCurrentUser();
     fetchComments();
-  }, [postId]);
+  }, [postId, fetchComments]);
 
   return (
     <div className='mt-10'>

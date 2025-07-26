@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import Cookies from 'js-cookie';
 import PostsList from '@/components/PostsList';
 import { apiFetch } from '@/lib/api';
@@ -74,7 +73,7 @@ const SearchPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [keyword, page, sort]);
+  }, [keyword, page, sort, loading]);
 
   useEffect(() => {
     if (!keyword) return;
@@ -109,7 +108,7 @@ const SearchPage: React.FC = () => {
   useEffect(() => {
     if (page <= 1 || !keyword) return;
     fetchPosts();
-  }, [page]);
+  }, [page, keyword, fetchPosts]);
 
   useEffect(() => {
     const el = sentinelRef.current;
@@ -136,7 +135,7 @@ const SearchPage: React.FC = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">検索結果: "{keyword}"</h2>
+      <h2 className="text-xl font-bold mb-4">検索結果: &quot;{keyword}&quot;</h2>
 
       <div className="mb-4">
         <label className="mr-2 font-medium">並べ替え:</label>
