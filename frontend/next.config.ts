@@ -7,9 +7,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: process.env.NODE_ENV === 'development'
-        ? 'http://backend:8000/:path*'
-        : 'http://ipaddress:8000/:path*'
+        destination: 'http://backend:8000/:path*',
       }
     ]
   }
