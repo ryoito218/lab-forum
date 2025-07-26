@@ -7,8 +7,6 @@ import { Comment } from '@/types';
 import CommentForm from '@/components/CommentForm';
 import { apiFetch } from '@/lib/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 const CommentsSection: React.FC = () => {
   const params = useParams();
   const postId = params?.id as string;

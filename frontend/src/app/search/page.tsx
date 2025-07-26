@@ -7,8 +7,6 @@ import Cookies from 'js-cookie';
 import PostsList from '@/components/PostsList';
 import { apiFetch } from '@/lib/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 type Post = {
   id: number;
   title: string;

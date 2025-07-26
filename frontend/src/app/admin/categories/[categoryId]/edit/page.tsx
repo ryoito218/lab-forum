@@ -5,8 +5,6 @@ import { useRouter, useParams } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { apiFetch } from '@/lib/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 type Category = {
   id: number;
   name: string;

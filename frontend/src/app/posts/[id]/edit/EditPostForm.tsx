@@ -6,8 +6,6 @@ import Cookies from 'js-cookie';
 import SimpleMarkdownEditor from '@/components/SimpleMarkdownEditor';
 import { apiFetch } from '@/lib/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 interface Tag {
   id: number;
   name: string;
