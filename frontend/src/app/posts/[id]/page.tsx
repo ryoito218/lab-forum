@@ -10,9 +10,9 @@ import PostContent from '@/components/PostContent';
 import { apiFetch } from '@/lib/api';
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 type Post = {

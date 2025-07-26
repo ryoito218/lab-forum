@@ -5,7 +5,7 @@ import PostsList, {Post} from '@/components/PostsList';
 import { apiFetch } from '@/lib/api';
 
 type Props = {
-  params: { tagName: string };
+  params: Promise<{ tagName: string }>;
 }
 
 const TagPostsPage = async ( {params}: Props) => {
