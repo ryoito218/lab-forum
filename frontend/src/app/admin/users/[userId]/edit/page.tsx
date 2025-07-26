@@ -12,6 +12,13 @@ type User = {
   role: 'normal' | 'admin';
 }
 
+type UserUpdateData = {
+  name: string;
+  email: string;
+  role: 'normal' | 'admin';
+  password?: string;
+};
+
 const EditUserPage = () => {
   const router = useRouter();
   const { userId } = useParams();
@@ -59,7 +66,7 @@ const EditUserPage = () => {
     e.preventDefault();
     const headers = getHeaders();
 
-    const body: Record<string, any> = { name, email, role };
+    const body: UserUpdateData = { name, email, role };
     if (password.trim()) {
       body.password = password;
     }
