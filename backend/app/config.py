@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     DEBUG: bool = False
     CORS_ORIGINS: List[HttpUrl] = []
+    OPENAI_API_KEY: str
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
