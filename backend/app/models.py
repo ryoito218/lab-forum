@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Table, func
+from pgvector.sqlalchemy import Vector
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -77,3 +78,13 @@ class Like(Base):
 
     post = relationship('Post', back_populates='likes')
     user = relationship('User', back_populates='likes')
+
+class RAGChunk(Base):
+    __tablename__ = 'rag_chunks'
+
+    id = Column(Integer, primary_key=True, index=True)
+    post_id = Column(Integer, ForeignKey('posts.id', ondelete='CASCADE'), nullable=False, index=True)
+    chunk_index = Column(Integer, nullable=False)
+    content = Column(Integer, nullable=False)
+    embedding = Column(Vector(1536), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
