@@ -33,7 +33,7 @@ services:
       - NODE_ENV=production
   
   db:
-    image: postgres:15
+    image: pgvector/pgvector:0.8.0-pg15
     container_name: postgres-db
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
