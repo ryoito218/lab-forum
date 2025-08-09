@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.dependencies import get_db, get_current_admin
 from app.models import RAGChunk, Post
-from app.utils.embedding import embed_text
+from backend.app.utils.embeddings import embed_text
 from app.utils.chunking import split_to_chunks
 
 router = APIRouter(prefix="/admin/rag", tags=["Admin RAG"], dependencies=[Depends(get_current_admin)],)
