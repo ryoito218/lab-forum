@@ -1,4 +1,4 @@
-def split_to_chunks(text: str, max_length: int = 400, overlap: int = 50):
+def split_to_chunks(text: str, max_length: int = 500, overlap: int = 50):
     chunks = []
     start = 0
     text_length = len(text)
