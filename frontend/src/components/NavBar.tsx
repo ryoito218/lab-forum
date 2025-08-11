@@ -21,7 +21,8 @@ const NavBar = () => {
 
   const navItems = [
     { label: 'ホーム', href: '/' },
-    { label: '投稿一覧', href: '/posts' }
+    { label: '投稿', href: '/posts' },
+    { label: 'RAG検索', href: '/rag' },
   ]
 
   const getHeaders = () => {
