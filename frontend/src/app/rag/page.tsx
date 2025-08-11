@@ -60,7 +60,7 @@ const RagPage = () => {
           onChange={(e) => setQ(e.target.value)}
         />
         <button
-          className='border rounded-xl px-4 py-2'
+          className='border rounded-xl px-4 py-2 cursor-pointer'
           onClick={ask}
           disabled={loading || !q.trim()}
         >
