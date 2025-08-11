@@ -11,4 +11,8 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["gunicorn", "app.main:app", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:8000"]
+COPY docker-entrypoint.sh /entrypoint.sh
+
+RUN sed -i 's/\r$//' /entrypoint.sh
+
+ENTRYPOINT ["sh", "/entrypoint.sh"]
