@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import List, Optional
 
 class TagResponse(BaseModel):
@@ -99,3 +99,16 @@ class SearchResponse(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+class AskRequest(BaseModel):
+    query: str = Field(..., min_length=1)
+    top_k: int = Field(3, ge=1, le=10)
+
+class Source(BaseModel):
+    post_id: int
+    chunk_index: int
+    snippet: str
+
+class AskResponse(BaseModel):
+    answer: str
+    sources: List[Source]

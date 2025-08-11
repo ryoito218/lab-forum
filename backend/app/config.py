@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     CORS_ORIGINS: List[HttpUrl] = []
     OPENAI_API_KEY: str
+    RAG_EMBEDDING_MODEL: str = "text-embedding-small"
+    RAG_EMBEDDING_DIM: int = 1536
+    RAG_ANSWER_MODEL: str = "gpt-4o-mini"
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
