@@ -12,3 +12,4 @@ python-multipart
 pydantic-settings
 pgvector
 openai
+alembic
