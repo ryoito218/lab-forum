@@ -50,17 +50,17 @@ const RagPage = () => {
   };
 
   return (
-    <div className='mx-auto max-w-2xl p-6 space-y-4'>
+    <div className='mx-auto max-w-2xl p-6 space-y-4 '>
       <h1 className='text-2xl font-bold'>RAG 検索</h1>
       <div className='flex gap-2'>
         <input
-          className='flex-1 border rounded-xl px-3 py-2'
+          className='flex-1 border rounded-xl px-3 py-2 bg-white'
           placeholder='質問を入力...'
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
         <button
-          className='border rounded-xl px-4 py-2 cursor-pointer'
+          className='border rounded-xl px-4 py-2 bg-white cursor-pointer'
           onClick={ask}
           disabled={loading || !q.trim()}
         >
@@ -73,7 +73,7 @@ const RagPage = () => {
       {res && (
         <section className='space-y-3'>
           <h2 className='text-xl font-semibold'>回答</h2>
-          <p className='whitespace-pre-wrap border rounded-xl p-3'>{res.answer}</p>
+          <p className='whitespace-pre-wrap border bg-white rounded-xl p-3'>{res.answer}</p>
 
           <h3 className='text-lg font-semibold'>参照スニペット</h3>
           <ul className='list-disc pl-6 space-y-1'>
