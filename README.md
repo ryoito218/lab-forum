@@ -2,7 +2,7 @@
 
 ## 🧪 開発環境での実行方法
 ```bash
-docker-compose up --build
+docker-compose up --build -d
 ```
 
 ---
@@ -10,7 +10,7 @@ docker-compose up --build
 ## 🚀 本番環境での実行方法
 
 ```bash
-docker compose -f docker-compose.yml up --build
+docker compose -f docker-compose.yml up --build -d
 ```
 ---
 
