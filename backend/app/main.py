@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine
 from . import models
-from app.routers import posts, categories, users, tags, auth, comments, likes, search, admin, healthz
+from app.routers import posts, categories, users, tags, auth, comments, likes, search, admin, healthz, rag
 from app.config import settings
 
 models.Base.metadata.create_all(bind=engine)
@@ -27,3 +27,4 @@ app.include_router(likes.router)
 app.include_router(search.router)
 app.include_router(admin.router)
 app.include_router(healthz.router)
+app.include_router(rag.router)
