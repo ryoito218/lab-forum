@@ -6,7 +6,7 @@ __pycache__/
 .env
 .env.production
 .env.local
-alembic/versions/*.py
+backend/alembic/versions/*.py
 
 # Node.js
 node_modules/
