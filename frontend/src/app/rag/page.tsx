@@ -42,10 +42,12 @@ const RagPage = () => {
       const data = await r.json();
       if (!r.ok) throw new Error(data?.detail || `HTTP ${r.status}`);
       setRes(data);
-    } catch (e: any) {
-      setErr(e?.message || "通信に失敗しました");
-    } finally {
-      setLoading(false);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message);
+      } else {
+        setErr("通信に失敗しました");
+      }
     }
   };
 
