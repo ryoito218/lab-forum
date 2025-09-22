@@ -10,6 +10,14 @@ class TagResponse(BaseModel):
         "from_attributes": True
     }
 
+class AuthorResponse(BaseModel):
+    id: int
+    name: str
+
+    model_config = {
+        "from_attributes": True
+    }
+
 class PostCreate(BaseModel):
     title: str
     content: str
@@ -27,6 +35,7 @@ class PostResponse(BaseModel):
     tags: List[TagResponse] = []
     like_count: int = 0
     liked_by_me: bool = False
+    author: AuthorResponse
 
     model_config = {
         "from_attributes": True
@@ -87,6 +96,7 @@ class CommentResponse(BaseModel):
     created_at: datetime
     user_id: int
     post_id: int
+    username: str
 
     model_config = {
         "from_attributes": True

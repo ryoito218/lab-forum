@@ -14,6 +14,7 @@ type Post = {
   like_count: number;
   liked_by_me: boolean;
   tags: { id: number, name: string }[];
+  author: { id: number; name: string };
 };
 
 const getPosts = async (): Promise<Post[]> => {
