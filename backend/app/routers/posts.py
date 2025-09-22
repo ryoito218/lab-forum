@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from app import models
 from app.database import SessionLocal
-from app.schemas import PostCreate, PostResponse, PostUpdate, TagResponse
+from app.schemas import PostCreate, PostResponse, PostUpdate, TagResponse, AuthorResponse
 from app.dependencies import get_current_user
 from app.models import User, Like, Post
 from typing import List
@@ -23,13 +23,17 @@ def make_post_response(post: Post, current_user: User, db: Session):
     pr.liked_by_me = db.query(Like).filter(
         Like.post_id == post.id, Like.user_id == current_user.id
     ).first() is not None
+    pr.author = AuthorResponse(id=post.author.id, name=post.author.name)
     return pr
 
 @router.get("", response_model=List[PostResponse])
 def read_posts(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     posts = (
         db.query(models.Post)
-        .options(joinedload(models.Post.tags))
+        .options(
+            joinedload(models.Post.tags),
+            joinedload(models.Post.author)
+        )
         .order_by(models.Post.updated_at.desc())
         .limit(20)
         .all()
@@ -58,13 +62,23 @@ def create_post(post_data: PostCreate, db: Session = Depends(get_db), current_us
     db.add(db_post)
     db.commit()
     db.refresh(db_post)
-    return db_post
+    
+    db_post = (
+        db.query(models.Post)
+        .options(joinedload(models.Post.tags), joinedload(models.Post.author))
+        .get(db_post.id)
+    )
+
+    return make_post_response(db_post, current_user, db)
 
 @router.get("/me", response_model=List[PostResponse])
 def read_my_posts(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     posts = (
             db.query(models.Post)
-            .options(joinedload(models.Post.tags))
+            .options(
+                joinedload(models.Post.tags),
+                joinedload(models.Post.author),
+            )
             .filter(models.Post.user_id == current_user.id)
             .order_by(models.Post.created_at.desc())
             .all()
@@ -78,7 +92,10 @@ def get_liked_posts(
 ):
     liked_posts = (
         db.query(models.Post)
-        .options(joinedload(models.Post.tags))
+        .options(
+            joinedload(models.Post.tags),
+            joinedload(models.Post.author),
+        )
         .join(models.Like, models.Like.post_id == models.Post.id)
         .filter(models.Like.user_id == current_user.id)
         .all()
@@ -87,7 +104,7 @@ def get_liked_posts(
 
 @router.get("/{post_id}", response_model=PostResponse)
 def read_post(post_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    post = db.query(models.Post).options(joinedload(models.Post.tags)).get(post_id)
+    post = db.query(models.Post).options(joinedload(models.Post.tags), joinedload(models.Post.author)).get(post_id)
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     return make_post_response(post, current_user, db)
@@ -120,7 +137,13 @@ def update_post(post_id: int, update_data: PostUpdate, db: Session = Depends(get
     
     db.commit()
     db.refresh(post)
-    return post
+
+    post = (
+        db.query(models.Post)
+        .options(joinedload(models.Post.tags), joinedload(models.Post.author))
+        .get(post.id)
+    )
+    return make_post_response(post, current_user, db)
 
 @router.delete("/{post_id}")
 def delete_post(post_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):

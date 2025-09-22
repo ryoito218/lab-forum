@@ -27,7 +27,14 @@ def create_comment(
     db.add(comment)
     db.commit()
     db.refresh(comment)
-    return comment
+    return schemas.CommentResponse(
+        id=comment.id,
+        content=comment.content,
+        post_id=comment.post_id,
+        user_id=comment.user_id,
+        username=current_user.name,
+        created_at=comment.created_at, 
+    )
 
 @router.get("", response_model=List[schemas.CommentResponse])
 def list_comments(
@@ -40,7 +47,17 @@ def list_comments(
         raise HTTPException(status_code=404, detail="Post not found")
     
     comments = db.query(models.Comment).filter(models.Comment.post_id == post_id).all()
-    return comments
+    return [
+        schemas.CommentResponse(
+            id=comment.id,
+            content=comment.content,
+            post_id=comment.post_id,
+            user_id=comment.user_id,
+            username=comment.user.name,
+            created_at=comment.created_at,
+        )
+        for comment in comments
+    ]
 
 # なぜcomments/{comment_id}?
 @router.delete("/{comment_id}", status_code=204)
