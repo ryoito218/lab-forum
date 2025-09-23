@@ -13,6 +13,7 @@ export type Post = {
   like_count: number;
   liked_by_me: boolean;
   tags: { id: number, name: string }[];
+  author: { id: number; name: string };
 };
 
 const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => {
@@ -34,6 +35,7 @@ const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => {
         return (
           <li key={post.id} className='p-4 bg-white shadow rounded'>
             <h3 className='text-lg font-bold'><Link href={`/posts/${post.id}`}>{post.title}</Link></h3>
+            <p className='text-sm text-gray-400 mt-2'>投稿者: {post.author.name}</p>
             <div className='mt-2 flex items-center space-x-2'>
               {post.liked_by_me ? (
                 <HeartIcon className='w-6 h-6 text-pink-500 fill-pink-500' />

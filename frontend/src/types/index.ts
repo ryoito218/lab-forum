@@ -4,4 +4,5 @@ export type Comment = {
   created_at: string;
   user_id: number;
   post_id: number;
+  username: string;
 };

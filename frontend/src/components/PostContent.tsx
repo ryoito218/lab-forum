@@ -8,7 +8,7 @@ const ReactMarkdown = dynamic(() => import('react-markdown'), {ssr: false});
 
 const PostContent = ({ content }: { content: string }) => {
   return (
-    <div className='prose max-w-none'>
+    <div className='prose max-w-none mt-2'>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>
         {content}
       </ReactMarkdown>

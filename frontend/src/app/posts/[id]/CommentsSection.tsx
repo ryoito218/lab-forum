@@ -72,6 +72,7 @@ const CommentsSection: React.FC = () => {
         {comments.map(comment => (
           <li key={comment.id} className='bg-white p-4 shadow rounded'>
             <p className='text-sm'>{comment.content}</p>
+            <p className='text-xs text-gray-500'>{comment.username}</p>
             <p className='text-xs text-gray-500'>
               {new Date(comment.created_at).toLocaleString()}
             </p>
